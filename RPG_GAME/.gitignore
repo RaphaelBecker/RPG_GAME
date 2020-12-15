@@ -1,0 +1,9 @@
+.vscode
+*.csv
+main
+*.pdf
+*.o
+*.txt
+**/src/build/rpg_game
+**/save/*.csv
+**/src/build/*.o
