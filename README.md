@@ -1,8 +1,8 @@
 # AP_project_RPG_game
 
-Created by: Waleed and Raphael.
+Created by: Waleedbinkhalid74 and me.
 The project is implemented as an assignment in the Advanced Programming Course WS 2020/2021 at the Technical University of Munich TUM.
-
+Currently at sprint 2 from 3 sprints.
 ## How to use
 
 1. Use the Makefile to compile: `make`
