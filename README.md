@@ -6,7 +6,7 @@ Currently at sprint 2 from 3 sprints.
 ## How to use
 
 1. Use the Makefile to compile: `make`
-2. Use make .PHONY to clean the project (delete .o files in ..src/obj)
+2. Use `make .PHONY` to clean the project (delete .o files in ..src/obj)
 3. Run executalbe with: `./rpg_game` which is stored in the build folder
 
 ## Game Description
