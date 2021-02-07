@@ -1,0 +1,1136 @@
+# Timing
+
+## We timed the fight function using chrono, and in most cases the execution time was less than 1ms.
+## "Fight Function Elapsed time: 0ms"
+
+
+# Using gprof
+
+## 1. We believe that the reason we do not see the cumulative time is because our code is not running for a very large span of time as our automated demo mode (run using the bot) exits the game 	(randomly) after a certain number of turns. This can be seen by running bot itself using b.
+
+## 2. In the profiler the most number of function calls was made in deleting the Enemy pointer once the enemy had died since this was linked to every fight that was called.
+
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+ no time accumulated
+
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls  Ts/call  Ts/call  name    
+  0.00      0.00     0.00      182     0.00     0.00  std::unique_ptr<Enemy, std::default_delete<Enemy> >::get() const
+  0.00      0.00     0.00      182     0.00     0.00  std::unique_ptr<Enemy, std::default_delete<Enemy> >::operator->() const
+  0.00      0.00     0.00      182     0.00     0.00  std::__uniq_ptr_impl<Enemy, std::default_delete<Enemy> >::_M_ptr() const
+  0.00      0.00     0.00      182     0.00     0.00  std::_Head_base<0ul, Enemy*, false>::_M_head(std::_Head_base<0ul, Enemy*, false> const&)
+  0.00      0.00     0.00      182     0.00     0.00  std::_Tuple_impl<0ul, Enemy*, std::default_delete<Enemy> >::_M_head(std::_Tuple_impl<0ul, Enemy*, std::default_delete<Enemy> > const&)
+  0.00      0.00     0.00      182     0.00     0.00  Enemy* const& std::__get_helper<0ul, Enemy*, std::default_delete<Enemy> >(std::_Tuple_impl<0ul, Enemy*, std::default_delete<Enemy> > const&)
+  0.00      0.00     0.00      182     0.00     0.00  std::tuple_element<0ul, std::tuple<Enemy*, std::default_delete<Enemy> > >::type const& std::get<0ul, Enemy*, std::default_delete<Enemy> >(std::tuple<Enemy*, std::default_delete<Enemy> > const&)
+  0.00      0.00     0.00       62     0.00     0.00  Player::getName[abi:cxx11]() const
+  0.00      0.00     0.00       49     0.00     0.00  menuSpacer()
+  0.00      0.00     0.00       47     0.00     0.00  bool __gnu_cxx::__is_null_pointer<char const>(char const*)
+  0.00      0.00     0.00       47     0.00     0.00  std::char_traits<char>::length(char const*)
+  0.00      0.00     0.00       47     0.00     0.00  void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char const*>(char const*, char const*)
+  0.00      0.00     0.00       47     0.00     0.00  void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char const*>(char const*, char const*, std::forward_iterator_tag)
+  0.00      0.00     0.00       47     0.00     0.00  void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct_aux<char const*>(char const*, char const*, std::__false_type)
+  0.00      0.00     0.00       47     0.00     0.00  std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string<std::allocator<char> >(char const*, std::allocator<char> const&)
+  0.00      0.00     0.00       47     0.00     0.00  std::iterator_traits<char const*>::difference_type std::__distance<char const*>(char const*, char const*, std::random_access_iterator_tag)
+  0.00      0.00     0.00       47     0.00     0.00  std::iterator_traits<char const*>::iterator_category std::__iterator_category<char const*>(char const* const&)
+  0.00      0.00     0.00       47     0.00     0.00  std::iterator_traits<char const*>::difference_type std::distance<char const*>(char const*, char const*)
+  0.00      0.00     0.00       46     0.00     0.00  singleSpacer()
+  0.00      0.00     0.00       44     0.00     0.00  Player::isAlive() const
+  0.00      0.00     0.00       43     0.00     0.00  printHeaderScreen(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)
+  0.00      0.00     0.00       42     0.00     0.00  Player::getHp() const
+  0.00      0.00     0.00       22     0.00     0.00  Player::getAp() const
+  0.00      0.00     0.00       22     0.00     0.00  Player::getDp() const
+  0.00      0.00     0.00       21     0.00     0.00  std::remove_reference<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>::type&& std::move<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&)
+  0.00      0.00     0.00       21     0.00     0.00  std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > std::operator+<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&&, char const*)
+  0.00      0.00     0.00       20     0.00     0.00  Player::setHp(int)
+  0.00      0.00     0.00       16     0.00     0.00  std::char_traits<char>::compare(char const*, char const*, unsigned long)
+  0.00      0.00     0.00       16     0.00     0.00  __gnu_cxx::__enable_if<std::__is_char<char>::__value, bool>::__type std::operator==<char>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+  0.00      0.00     0.00       14     0.00     0.00  std::unique_ptr<TestBot, std::default_delete<TestBot> >::get() const
+  0.00      0.00     0.00       14     0.00     0.00  std::unique_ptr<TestBot, std::default_delete<TestBot> >::operator->() const
+  0.00      0.00     0.00       14     0.00     0.00  std::__uniq_ptr_impl<TestBot, std::default_delete<TestBot> >::_M_ptr() const
+  0.00      0.00     0.00       14     0.00     0.00  std::_Head_base<0ul, TestBot*, false>::_M_head(std::_Head_base<0ul, TestBot*, false> const&)
+  0.00      0.00     0.00       14     0.00     0.00  std::_Tuple_impl<0ul, TestBot*, std::default_delete<TestBot> >::_M_head(std::_Tuple_impl<0ul, TestBot*, std::default_delete<TestBot> > const&)
+  0.00      0.00     0.00       14     0.00     0.00  TestBot* const& std::__get_helper<0ul, TestBot*, std::default_delete<TestBot> >(std::_Tuple_impl<0ul, TestBot*, std::default_delete<TestBot> > const&)
+  0.00      0.00     0.00       14     0.00     0.00  std::tuple_element<0ul, std::tuple<TestBot*, std::default_delete<TestBot> > >::type const& std::get<0ul, TestBot*, std::default_delete<TestBot> >(std::tuple<TestBot*, std::default_delete<TestBot> > const&)
+  0.00      0.00     0.00       11     0.00     0.00  int&& std::forward<int>(std::remove_reference<int>::type&)
+  0.00      0.00     0.00       10     0.00     0.00  std::unique_ptr<Player, std::default_delete<Player> >::get() const
+  0.00      0.00     0.00       10     0.00     0.00  std::unique_ptr<Player, std::default_delete<Player> >::operator->() const
+  0.00      0.00     0.00       10     0.00     0.00  std::__uniq_ptr_impl<Player, std::default_delete<Player> >::_M_ptr() const
+  0.00      0.00     0.00       10     0.00     0.00  std::_Head_base<0ul, Player*, false>::_M_head(std::_Head_base<0ul, Player*, false> const&)
+  0.00      0.00     0.00       10     0.00     0.00  std::_Tuple_impl<0ul, Player*, std::default_delete<Player> >::_M_head(std::_Tuple_impl<0ul, Player*, std::default_delete<Player> > const&)
+  0.00      0.00     0.00       10     0.00     0.00  Player* const& std::__get_helper<0ul, Player*, std::default_delete<Player> >(std::_Tuple_impl<0ul, Player*, std::default_delete<Player> > const&)
+  0.00      0.00     0.00       10     0.00     0.00  std::tuple_element<0ul, std::tuple<Player*, std::default_delete<Player> > >::type const& std::get<0ul, Player*, std::default_delete<Player> >(std::tuple<Player*, std::default_delete<Player> > const&)
+  0.00      0.00     0.00        9     0.00     0.00  TestBot::getTestMode()
+  0.00      0.00     0.00        6     0.00     0.00  std::default_delete<Trainee>&& std::forward<std::default_delete<Trainee> >(std::remove_reference<std::default_delete<Trainee> >::type&)
+  0.00      0.00     0.00        5     0.00     0.00  getUserInput(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::unique_ptr<TestBot, std::default_delete<TestBot> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, int, bool)
+  0.00      0.00     0.00        4     0.00     0.00  printFightScreen(int)
+  0.00      0.00     0.00        4     0.00     0.00  TestBot::getNextCommand(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, int)
+  0.00      0.00     0.00        4     0.00     0.00  Player::getPlayTime() const
+  0.00      0.00     0.00        3     0.00     0.00  std::_Head_base<0ul, Trainee*, false>::_M_head(std::_Head_base<0ul, Trainee*, false>&)
+  0.00      0.00     0.00        3     0.00     0.00  std::_Tuple_impl<0ul, Trainee*, std::default_delete<Trainee> >::_M_head(std::_Tuple_impl<0ul, Trainee*, std::default_delete<Trainee> >&)
+  0.00      0.00     0.00        3     0.00     0.00  std::__uniq_ptr_impl<Trainee, std::default_delete<Trainee> >::_M_ptr()
+  0.00      0.00     0.00        3     0.00     0.00  Trainee*& std::__get_helper<0ul, Trainee*, std::default_delete<Trainee> >(std::_Tuple_impl<0ul, Trainee*, std::default_delete<Trainee> >&)
+  0.00      0.00     0.00        3     0.00     0.00  std::tuple_element<0ul, std::tuple<Trainee*, std::default_delete<Trainee> > >::type& std::get<0ul, Trainee*, std::default_delete<Trainee> >(std::tuple<Trainee*, std::default_delete<Trainee> >&)
+  0.00      0.00     0.00        3     0.00     0.00  Player*& std::forward<Player*&>(std::remove_reference<Player*&>::type&)
+  0.00      0.00     0.00        2     0.00     0.00  Player::Player(int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, int, int, int)
+  0.00      0.00     0.00        2     0.00     0.00  Player::~Player()
+  0.00      0.00     0.00        2     0.00     0.00  Player::getLevel() const
+  0.00      0.00     0.00        2     0.00     0.00  Player::getMax_hp() const
+  0.00      0.00     0.00        2     0.00     0.00  std::_Head_base<0ul, Enemy*, false>::_M_head(std::_Head_base<0ul, Enemy*, false>&)
+  0.00      0.00     0.00        2     0.00     0.00  std::_Head_base<0ul, TestBot*, false>::_M_head(std::_Head_base<0ul, TestBot*, false>&)
+  0.00      0.00     0.00        2     0.00     0.00  std::_Tuple_impl<0ul, Enemy*, std::default_delete<Enemy> >::_M_head(std::_Tuple_impl<0ul, Enemy*, std::default_delete<Enemy> >&)
+  0.00      0.00     0.00        2     0.00     0.00  std::_Tuple_impl<0ul, TestBot*, std::default_delete<TestBot> >::_M_head(std::_Tuple_impl<0ul, TestBot*, std::default_delete<TestBot> >&)
+  0.00      0.00     0.00        2     0.00     0.00  std::__uniq_ptr_impl<Enemy, std::default_delete<Enemy> >::_M_ptr()
+  0.00      0.00     0.00        2     0.00     0.00  std::__uniq_ptr_impl<TestBot, std::default_delete<TestBot> >::_M_ptr()
+  0.00      0.00     0.00        2     0.00     0.00  Enemy*& std::__get_helper<0ul, Enemy*, std::default_delete<Enemy> >(std::_Tuple_impl<0ul, Enemy*, std::default_delete<Enemy> >&)
+  0.00      0.00     0.00        2     0.00     0.00  TestBot*& std::__get_helper<0ul, TestBot*, std::default_delete<TestBot> >(std::_Tuple_impl<0ul, TestBot*, std::default_delete<TestBot> >&)
+  0.00      0.00     0.00        2     0.00     0.00  std::tuple_element<0ul, std::tuple<Enemy*, std::default_delete<Enemy> > >::type& std::get<0ul, Enemy*, std::default_delete<Enemy> >(std::tuple<Enemy*, std::default_delete<Enemy> >&)
+  0.00      0.00     0.00        2     0.00     0.00  std::tuple_element<0ul, std::tuple<TestBot*, std::default_delete<TestBot> > >::type& std::get<0ul, TestBot*, std::default_delete<TestBot> >(std::tuple<TestBot*, std::default_delete<TestBot> >&)
+  0.00      0.00     0.00        1     0.00     0.00  _GLOBAL__sub_I__Z12getUserInputNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERSt10unique_ptrI7TestBotSt14default_deleteIS6_EEPS4_ib
+  0.00      0.00     0.00        1     0.00     0.00  _GLOBAL__sub_I__Z12singleSpacerv
+  0.00      0.00     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN4MageC2EiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEiiiii
+  0.00      0.00     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN5EnemyC2EiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEiiii
+  0.00      0.00     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN6PlayerC2EiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEiiii
+  0.00      0.00     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN7FighterC2EiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEiiiii
+  0.00      0.00     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN7TestBotC2Eb
+  0.00      0.00     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN7TraineeC2EiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEiiiii
+  0.00      0.00     0.00        1     0.00     0.00  printMenuScreen()
+  0.00      0.00     0.00        1     0.00     0.00  __static_initialization_and_destruction_0(int, int)
+  0.00      0.00     0.00        1     0.00     0.00  __static_initialization_and_destruction_0(int, int)
+  0.00      0.00     0.00        1     0.00     0.00  __static_initialization_and_destruction_0(int, int)
+  0.00      0.00     0.00        1     0.00     0.00  __static_initialization_and_destruction_0(int, int)
+  0.00      0.00     0.00        1     0.00     0.00  __static_initialization_and_destruction_0(int, int)
+  0.00      0.00     0.00        1     0.00     0.00  __static_initialization_and_destruction_0(int, int)
+  0.00      0.00     0.00        1     0.00     0.00  __static_initialization_and_destruction_0(int, int)
+  0.00      0.00     0.00        1     0.00     0.00  __static_initialization_and_destruction_0(int, int)
+  0.00      0.00     0.00        1     0.00     0.00  game_loop(std::unique_ptr<Player, std::default_delete<Player> >&, std::unique_ptr<TestBot, std::default_delete<TestBot> >&)
+  0.00      0.00     0.00        1     0.00     0.00  Enemy::Enemy(int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, int, int, int)
+  0.00      0.00     0.00        1     0.00     0.00  Enemy::~Enemy()
+  0.00      0.00     0.00        1     0.00     0.00  Player::rest()
+  0.00      0.00     0.00        1     0.00     0.00  Player::fight(std::unique_ptr<Enemy, std::default_delete<Enemy> >&)
+  0.00      0.00     0.00        1     0.00     0.00  Player::setAp(int)
+  0.00      0.00     0.00        1     0.00     0.00  Player::setDp(int)
+  0.00      0.00     0.00        1     0.00     0.00  Player::levelUp()
+  0.00      0.00     0.00        1     0.00     0.00  Player::setLevel(int)
+  0.00      0.00     0.00        1     0.00     0.00  Player::setMax_hp(int)
+  0.00      0.00     0.00        1     0.00     0.00  TestBot::setTestMode(bool)
+  0.00      0.00     0.00        1     0.00     0.00  TestBot::TestBot(bool)
+  0.00      0.00     0.00        1     0.00     0.00  Trainee::increaseStats()
+  0.00      0.00     0.00        1     0.00     0.00  Trainee::printPlayerStatusScreen()
+  0.00      0.00     0.00        1     0.00     0.00  Trainee::Trainee(int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, int, int, int, int)
+  0.00      0.00     0.00        1     0.00     0.00  std::unique_ptr<Trainee, std::default_delete<Trainee> >::get() const
+  0.00      0.00     0.00        1     0.00     0.00  std::default_delete<Enemy>::operator()(Enemy*) const
+  0.00      0.00     0.00        1     0.00     0.00  std::default_delete<Player>::operator()(Player*) const
+  0.00      0.00     0.00        1     0.00     0.00  std::default_delete<TestBot>::operator()(TestBot*) const
+  0.00      0.00     0.00        1     0.00     0.00  std::__uniq_ptr_impl<Trainee, std::default_delete<Trainee> >::_M_ptr() const
+  0.00      0.00     0.00        1     0.00     0.00  std::_Head_base<0ul, Enemy*, false>::_Head_base()
+  0.00      0.00     0.00        1     0.00     0.00  std::_Head_base<0ul, Player*, false>::_M_head(std::_Head_base<0ul, Player*, false>&)
+  0.00      0.00     0.00        1     0.00     0.00  std::_Head_base<0ul, Player*, false>::_Head_base<Player*&>(Player*&)
+  0.00      0.00     0.00        1     0.00     0.00  std::_Head_base<0ul, TestBot*, false>::_Head_base()
+  0.00      0.00     0.00        1     0.00     0.00  std::_Head_base<0ul, Trainee*, false>::_M_head(std::_Head_base<0ul, Trainee*, false> const&)
+  0.00      0.00     0.00        1     0.00     0.00  std::_Head_base<0ul, Trainee*, false>::_Head_base()
+  0.00      0.00     0.00        1     0.00     0.00  std::_Head_base<1ul, std::default_delete<Enemy>, true>::_M_head(std::_Head_base<1ul, std::default_delete<Enemy>, true>&)
+  0.00      0.00     0.00        1     0.00     0.00  std::_Head_base<1ul, std::default_delete<Enemy>, true>::_Head_base()
+  0.00      0.00     0.00        1     0.00     0.00  std::_Head_base<1ul, std::default_delete<Player>, true>::_M_head(std::_Head_base<1ul, std::default_delete<Player>, true>&)
+  0.00      0.00     0.00        1     0.00     0.00  std::_Head_base<1ul, std::default_delete<Player>, true>::_Head_base<std::default_delete<Trainee> >(std::default_delete<Trainee>&&)
+  0.00      0.00     0.00        1     0.00     0.00  std::_Head_base<1ul, std::default_delete<TestBot>, true>::_M_head(std::_Head_base<1ul, std::default_delete<TestBot>, true>&)
+  0.00      0.00     0.00        1     0.00     0.00  std::_Head_base<1ul, std::default_delete<TestBot>, true>::_Head_base()
+  0.00      0.00     0.00        1     0.00     0.00  std::_Head_base<1ul, std::default_delete<Trainee>, true>::_M_head(std::_Head_base<1ul, std::default_delete<Trainee>, true>&)
+  0.00      0.00     0.00        1     0.00     0.00  std::_Head_base<1ul, std::default_delete<Trainee>, true>::_Head_base()
+  0.00      0.00     0.00        1     0.00     0.00  std::unique_ptr<Enemy, std::default_delete<Enemy> >::get_deleter()
+  0.00      0.00     0.00        1     0.00     0.00  std::unique_ptr<Enemy, std::default_delete<Enemy> >::unique_ptr<std::default_delete<Enemy>, void>(Enemy*)
+  0.00      0.00     0.00        1     0.00     0.00  std::unique_ptr<Enemy, std::default_delete<Enemy> >::~unique_ptr()
+  0.00      0.00     0.00        1     0.00     0.00  std::unique_ptr<Player, std::default_delete<Player> >::get_deleter()
+  0.00      0.00     0.00        1     0.00     0.00  std::unique_ptr<Player, std::default_delete<Player> >::unique_ptr<Trainee, std::default_delete<Trainee>, void>(std::unique_ptr<Trainee, std::default_delete<Trainee> >&&)
+  0.00      0.00     0.00        1     0.00     0.00  std::unique_ptr<Player, std::default_delete<Player> >::~unique_ptr()
+  0.00      0.00     0.00        1     0.00     0.00  std::unique_ptr<TestBot, std::default_delete<TestBot> >::get_deleter()
+  0.00      0.00     0.00        1     0.00     0.00  std::unique_ptr<TestBot, std::default_delete<TestBot> >::unique_ptr<std::default_delete<TestBot>, void>(TestBot*)
+  0.00      0.00     0.00        1     0.00     0.00  std::unique_ptr<TestBot, std::default_delete<TestBot> >::~unique_ptr()
+  0.00      0.00     0.00        1     0.00     0.00  std::unique_ptr<Trainee, std::default_delete<Trainee> >::get_deleter()
+  0.00      0.00     0.00        1     0.00     0.00  std::unique_ptr<Trainee, std::default_delete<Trainee> >::release()
+  0.00      0.00     0.00        1     0.00     0.00  std::unique_ptr<Trainee, std::default_delete<Trainee> >::unique_ptr<std::default_delete<Trainee>, void>(Trainee*)
+  0.00      0.00     0.00        1     0.00     0.00  std::unique_ptr<Trainee, std::default_delete<Trainee> >::~unique_ptr()
+  0.00      0.00     0.00        1     0.00     0.00  std::_Tuple_impl<0ul, Enemy*, std::default_delete<Enemy> >::_Tuple_impl()
+  0.00      0.00     0.00        1     0.00     0.00  std::_Tuple_impl<0ul, Player*, std::default_delete<Player> >::_M_head(std::_Tuple_impl<0ul, Player*, std::default_delete<Player> >&)
+  0.00      0.00     0.00        1     0.00     0.00  std::_Tuple_impl<0ul, Player*, std::default_delete<Player> >::_Tuple_impl<Player*&, std::default_delete<Trainee>, void>(Player*&, std::default_delete<Trainee>&&)
+  0.00      0.00     0.00        1     0.00     0.00  std::_Tuple_impl<0ul, TestBot*, std::default_delete<TestBot> >::_Tuple_impl()
+  0.00      0.00     0.00        1     0.00     0.00  std::_Tuple_impl<0ul, Trainee*, std::default_delete<Trainee> >::_M_head(std::_Tuple_impl<0ul, Trainee*, std::default_delete<Trainee> > const&)
+  0.00      0.00     0.00        1     0.00     0.00  std::_Tuple_impl<0ul, Trainee*, std::default_delete<Trainee> >::_Tuple_impl()
+  0.00      0.00     0.00        1     0.00     0.00  std::_Tuple_impl<1ul, std::default_delete<Enemy> >::_M_head(std::_Tuple_impl<1ul, std::default_delete<Enemy> >&)
+  0.00      0.00     0.00        1     0.00     0.00  std::_Tuple_impl<1ul, std::default_delete<Enemy> >::_Tuple_impl()
+  0.00      0.00     0.00        1     0.00     0.00  std::_Tuple_impl<1ul, std::default_delete<Player> >::_M_head(std::_Tuple_impl<1ul, std::default_delete<Player> >&)
+  0.00      0.00     0.00        1     0.00     0.00  std::_Tuple_impl<1ul, std::default_delete<Player> >::_Tuple_impl<std::default_delete<Trainee> >(std::default_delete<Trainee>&&)
+  0.00      0.00     0.00        1     0.00     0.00  std::_Tuple_impl<1ul, std::default_delete<TestBot> >::_M_head(std::_Tuple_impl<1ul, std::default_delete<TestBot> >&)
+  0.00      0.00     0.00        1     0.00     0.00  std::_Tuple_impl<1ul, std::default_delete<TestBot> >::_Tuple_impl()
+  0.00      0.00     0.00        1     0.00     0.00  std::_Tuple_impl<1ul, std::default_delete<Trainee> >::_M_head(std::_Tuple_impl<1ul, std::default_delete<Trainee> >&)
+  0.00      0.00     0.00        1     0.00     0.00  std::_Tuple_impl<1ul, std::default_delete<Trainee> >::_Tuple_impl()
+  0.00      0.00     0.00        1     0.00     0.00  std::default_delete<Player>::default_delete<Trainee, void>(std::default_delete<Trainee> const&)
+  0.00      0.00     0.00        1     0.00     0.00  std::__uniq_ptr_impl<Enemy, std::default_delete<Enemy> >::_M_deleter()
+  0.00      0.00     0.00        1     0.00     0.00  std::__uniq_ptr_impl<Enemy, std::default_delete<Enemy> >::__uniq_ptr_impl(Enemy*)
+  0.00      0.00     0.00        1     0.00     0.00  std::__uniq_ptr_impl<Player, std::default_delete<Player> >::_M_deleter()
+  0.00      0.00     0.00        1     0.00     0.00  std::__uniq_ptr_impl<Player, std::default_delete<Player> >::_M_ptr()
+  0.00      0.00     0.00        1     0.00     0.00  std::__uniq_ptr_impl<Player, std::default_delete<Player> >::__uniq_ptr_impl<std::default_delete<Trainee> >(Player*, std::default_delete<Trainee>&&)
+  0.00      0.00     0.00        1     0.00     0.00  std::__uniq_ptr_impl<TestBot, std::default_delete<TestBot> >::_M_deleter()
+  0.00      0.00     0.00        1     0.00     0.00  std::__uniq_ptr_impl<TestBot, std::default_delete<TestBot> >::__uniq_ptr_impl(TestBot*)
+  0.00      0.00     0.00        1     0.00     0.00  std::__uniq_ptr_impl<Trainee, std::default_delete<Trainee> >::_M_deleter()
+  0.00      0.00     0.00        1     0.00     0.00  std::__uniq_ptr_impl<Trainee, std::default_delete<Trainee> >::__uniq_ptr_impl(Trainee*)
+  0.00      0.00     0.00        1     0.00     0.00  std::tuple<Enemy*, std::default_delete<Enemy> >::tuple<Enemy*, std::default_delete<Enemy>, true>()
+  0.00      0.00     0.00        1     0.00     0.00  std::tuple<Player*, std::default_delete<Player> >::tuple<Player*&, std::default_delete<Trainee>, true>(Player*&, std::default_delete<Trainee>&&)
+  0.00      0.00     0.00        1     0.00     0.00  std::tuple<TestBot*, std::default_delete<TestBot> >::tuple<TestBot*, std::default_delete<TestBot>, true>()
+  0.00      0.00     0.00        1     0.00     0.00  std::tuple<Trainee*, std::default_delete<Trainee> >::tuple<Trainee*, std::default_delete<Trainee>, true>()
+  0.00      0.00     0.00        1     0.00     0.00  std::_MakeUniq<Enemy>::__single_object std::make_unique<Enemy, int, char const (&) [8], int, int, int, int>(int&&, char const (&) [8], int&&, int&&, int&&, int&&)
+  0.00      0.00     0.00        1     0.00     0.00  std::_MakeUniq<TestBot>::__single_object std::make_unique<TestBot, bool>(bool&&)
+  0.00      0.00     0.00        1     0.00     0.00  std::_MakeUniq<Trainee>::__single_object std::make_unique<Trainee, int, char const (&) [6], int, int, int, int, int>(int&&, char const (&) [6], int&&, int&&, int&&, int&&, int&&)
+  0.00      0.00     0.00        1     0.00     0.00  Player*& std::__get_helper<0ul, Player*, std::default_delete<Player> >(std::_Tuple_impl<0ul, Player*, std::default_delete<Player> >&)
+  0.00      0.00     0.00        1     0.00     0.00  Trainee* const& std::__get_helper<0ul, Trainee*, std::default_delete<Trainee> >(std::_Tuple_impl<0ul, Trainee*, std::default_delete<Trainee> > const&)
+  0.00      0.00     0.00        1     0.00     0.00  std::default_delete<Enemy>& std::__get_helper<1ul, std::default_delete<Enemy>>(std::_Tuple_impl<1ul, std::default_delete<Enemy>>&)
+  0.00      0.00     0.00        1     0.00     0.00  std::default_delete<Player>& std::__get_helper<1ul, std::default_delete<Player>>(std::_Tuple_impl<1ul, std::default_delete<Player>>&)
+  0.00      0.00     0.00        1     0.00     0.00  std::default_delete<TestBot>& std::__get_helper<1ul, std::default_delete<TestBot>>(std::_Tuple_impl<1ul, std::default_delete<TestBot>>&)
+  0.00      0.00     0.00        1     0.00     0.00  std::default_delete<Trainee>& std::__get_helper<1ul, std::default_delete<Trainee>>(std::_Tuple_impl<1ul, std::default_delete<Trainee>>&)
+  0.00      0.00     0.00        1     0.00     0.00  std::tuple_element<0ul, std::tuple<Player*, std::default_delete<Player> > >::type& std::get<0ul, Player*, std::default_delete<Player> >(std::tuple<Player*, std::default_delete<Player> >&)
+  0.00      0.00     0.00        1     0.00     0.00  std::tuple_element<0ul, std::tuple<Trainee*, std::default_delete<Trainee> > >::type const& std::get<0ul, Trainee*, std::default_delete<Trainee> >(std::tuple<Trainee*, std::default_delete<Trainee> > const&)
+  0.00      0.00     0.00        1     0.00     0.00  std::tuple_element<1ul, std::tuple<Enemy*, std::default_delete<Enemy> > >::type& std::get<1ul, Enemy*, std::default_delete<Enemy> >(std::tuple<Enemy*, std::default_delete<Enemy> >&)
+  0.00      0.00     0.00        1     0.00     0.00  std::tuple_element<1ul, std::tuple<Player*, std::default_delete<Player> > >::type& std::get<1ul, Player*, std::default_delete<Player> >(std::tuple<Player*, std::default_delete<Player> >&)
+  0.00      0.00     0.00        1     0.00     0.00  std::tuple_element<1ul, std::tuple<TestBot*, std::default_delete<TestBot> > >::type& std::get<1ul, TestBot*, std::default_delete<TestBot> >(std::tuple<TestBot*, std::default_delete<TestBot> >&)
+  0.00      0.00     0.00        1     0.00     0.00  std::tuple_element<1ul, std::tuple<Trainee*, std::default_delete<Trainee> > >::type& std::get<1ul, Trainee*, std::default_delete<Trainee> >(std::tuple<Trainee*, std::default_delete<Trainee> >&)
+  0.00      0.00     0.00        1     0.00     0.00  std::remove_reference<Enemy*&>::type&& std::move<Enemy*&>(Enemy*&)
+  0.00      0.00     0.00        1     0.00     0.00  std::remove_reference<Player*&>::type&& std::move<Player*&>(Player*&)
+  0.00      0.00     0.00        1     0.00     0.00  std::remove_reference<TestBot*&>::type&& std::move<TestBot*&>(TestBot*&)
+  0.00      0.00     0.00        1     0.00     0.00  char const (&std::forward<char const (&) [6]>(std::remove_reference<char const (&) [6]>::type&)) [6]
+  0.00      0.00     0.00        1     0.00     0.00  char const (&std::forward<char const (&) [8]>(std::remove_reference<char const (&) [8]>::type&)) [8]
+  0.00      0.00     0.00        1     0.00     0.00  bool&& std::forward<bool>(std::remove_reference<bool>::type&)
+  0.00      0.00     0.00        1     0.00     0.00  bool std::operator==<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*)
+  0.00      0.00     0.00        1     0.00     0.00  bool std::operator!=<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*)
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 2 byte(s) no time propagated
+
+index % time    self  children    called     name
+                0.00    0.00     182/182         std::unique_ptr<Enemy, std::default_delete<Enemy> >::operator->() const [9]
+[8]      0.0    0.00    0.00     182         std::unique_ptr<Enemy, std::default_delete<Enemy> >::get() const [8]
+                0.00    0.00     182/182         std::__uniq_ptr_impl<Enemy, std::default_delete<Enemy> >::_M_ptr() const [10]
+-----------------------------------------------
+                0.00    0.00     182/182         Player::fight(std::unique_ptr<Enemy, std::default_delete<Enemy> >&) [99]
+[9]      0.0    0.00    0.00     182         std::unique_ptr<Enemy, std::default_delete<Enemy> >::operator->() const [9]
+                0.00    0.00     182/182         std::unique_ptr<Enemy, std::default_delete<Enemy> >::get() const [8]
+-----------------------------------------------
+                0.00    0.00     182/182         std::unique_ptr<Enemy, std::default_delete<Enemy> >::get() const [8]
+[10]     0.0    0.00    0.00     182         std::__uniq_ptr_impl<Enemy, std::default_delete<Enemy> >::_M_ptr() const [10]
+                0.00    0.00     182/182         std::tuple_element<0ul, std::tuple<Enemy*, std::default_delete<Enemy> > >::type const& std::get<0ul, Enemy*, std::default_delete<Enemy> >(std::tuple<Enemy*, std::default_delete<Enemy> > const&) [14]
+-----------------------------------------------
+                0.00    0.00     182/182         std::_Tuple_impl<0ul, Enemy*, std::default_delete<Enemy> >::_M_head(std::_Tuple_impl<0ul, Enemy*, std::default_delete<Enemy> > const&) [12]
+[11]     0.0    0.00    0.00     182         std::_Head_base<0ul, Enemy*, false>::_M_head(std::_Head_base<0ul, Enemy*, false> const&) [11]
+-----------------------------------------------
+                0.00    0.00     182/182         Enemy* const& std::__get_helper<0ul, Enemy*, std::default_delete<Enemy> >(std::_Tuple_impl<0ul, Enemy*, std::default_delete<Enemy> > const&) [13]
+[12]     0.0    0.00    0.00     182         std::_Tuple_impl<0ul, Enemy*, std::default_delete<Enemy> >::_M_head(std::_Tuple_impl<0ul, Enemy*, std::default_delete<Enemy> > const&) [12]
+                0.00    0.00     182/182         std::_Head_base<0ul, Enemy*, false>::_M_head(std::_Head_base<0ul, Enemy*, false> const&) [11]
+-----------------------------------------------
+                0.00    0.00     182/182         std::tuple_element<0ul, std::tuple<Enemy*, std::default_delete<Enemy> > >::type const& std::get<0ul, Enemy*, std::default_delete<Enemy> >(std::tuple<Enemy*, std::default_delete<Enemy> > const&) [14]
+[13]     0.0    0.00    0.00     182         Enemy* const& std::__get_helper<0ul, Enemy*, std::default_delete<Enemy> >(std::_Tuple_impl<0ul, Enemy*, std::default_delete<Enemy> > const&) [13]
+                0.00    0.00     182/182         std::_Tuple_impl<0ul, Enemy*, std::default_delete<Enemy> >::_M_head(std::_Tuple_impl<0ul, Enemy*, std::default_delete<Enemy> > const&) [12]
+-----------------------------------------------
+                0.00    0.00     182/182         std::__uniq_ptr_impl<Enemy, std::default_delete<Enemy> >::_M_ptr() const [10]
+[14]     0.0    0.00    0.00     182         std::tuple_element<0ul, std::tuple<Enemy*, std::default_delete<Enemy> > >::type const& std::get<0ul, Enemy*, std::default_delete<Enemy> >(std::tuple<Enemy*, std::default_delete<Enemy> > const&) [14]
+                0.00    0.00     182/182         Enemy* const& std::__get_helper<0ul, Enemy*, std::default_delete<Enemy> >(std::_Tuple_impl<0ul, Enemy*, std::default_delete<Enemy> > const&) [13]
+-----------------------------------------------
+                0.00    0.00       1/62          Trainee::printPlayerStatusScreen() [108]
+                0.00    0.00      61/62          Player::fight(std::unique_ptr<Enemy, std::default_delete<Enemy> >&) [99]
+[15]     0.0    0.00    0.00      62         Player::getName[abi:cxx11]() const [15]
+-----------------------------------------------
+                0.00    0.00       1/49          printMenuScreen() [86]
+                0.00    0.00       1/49          Trainee::printPlayerStatusScreen() [108]
+                0.00    0.00       4/49          printFightScreen(int) [55]
+                0.00    0.00      43/49          printHeaderScreen(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [28]
+[16]     0.0    0.00    0.00      49         menuSpacer() [16]
+-----------------------------------------------
+                0.00    0.00      47/47          void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char const*>(char const*, char const*, std::forward_iterator_tag) [20]
+[17]     0.0    0.00    0.00      47         bool __gnu_cxx::__is_null_pointer<char const>(char const*) [17]
+-----------------------------------------------
+                0.00    0.00      47/47          std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string<std::allocator<char> >(char const*, std::allocator<char> const&) [22]
+[18]     0.0    0.00    0.00      47         std::char_traits<char>::length(char const*) [18]
+-----------------------------------------------
+                0.00    0.00      47/47          std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string<std::allocator<char> >(char const*, std::allocator<char> const&) [22]
+[19]     0.0    0.00    0.00      47         void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char const*>(char const*, char const*) [19]
+                0.00    0.00      47/47          void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct_aux<char const*>(char const*, char const*, std::__false_type) [21]
+-----------------------------------------------
+                0.00    0.00      47/47          void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct_aux<char const*>(char const*, char const*, std::__false_type) [21]
+[20]     0.0    0.00    0.00      47         void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char const*>(char const*, char const*, std::forward_iterator_tag) [20]
+                0.00    0.00      47/47          bool __gnu_cxx::__is_null_pointer<char const>(char const*) [17]
+                0.00    0.00      47/47          std::iterator_traits<char const*>::difference_type std::distance<char const*>(char const*, char const*) [25]
+-----------------------------------------------
+                0.00    0.00      47/47          void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char const*>(char const*, char const*) [19]
+[21]     0.0    0.00    0.00      47         void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct_aux<char const*>(char const*, char const*, std::__false_type) [21]
+                0.00    0.00      47/47          void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char const*>(char const*, char const*, std::forward_iterator_tag) [20]
+-----------------------------------------------
+                0.00    0.00       1/47          std::_MakeUniq<Trainee>::__single_object std::make_unique<Trainee, int, char const (&) [6], int, int, int, int, int>(int&&, char const (&) [6], int&&, int&&, int&&, int&&, int&&) [172]
+                0.00    0.00       1/47          std::_MakeUniq<Enemy>::__single_object std::make_unique<Enemy, int, char const (&) [8], int, int, int, int>(int&&, char const (&) [8], int&&, int&&, int&&, int&&) [170]
+                0.00    0.00       1/47          Trainee::printPlayerStatusScreen() [108]
+                0.00    0.00       4/47          __static_initialization_and_destruction_0(int, int) [87]
+                0.00    0.00       5/47          getUserInput(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::unique_ptr<TestBot, std::default_delete<TestBot> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, int, bool) [54]
+                0.00    0.00       5/47          main [6]
+                0.00    0.00       9/47          game_loop(std::unique_ptr<Player, std::default_delete<Player> >&, std::unique_ptr<TestBot, std::default_delete<TestBot> >&) [95]
+                0.00    0.00      21/47          Player::fight(std::unique_ptr<Enemy, std::default_delete<Enemy> >&) [99]
+[22]     0.0    0.00    0.00      47         std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string<std::allocator<char> >(char const*, std::allocator<char> const&) [22]
+                0.00    0.00      47/47          std::char_traits<char>::length(char const*) [18]
+                0.00    0.00      47/47          void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char const*>(char const*, char const*) [19]
+-----------------------------------------------
+                0.00    0.00      47/47          std::iterator_traits<char const*>::difference_type std::distance<char const*>(char const*, char const*) [25]
+[23]     0.0    0.00    0.00      47         std::iterator_traits<char const*>::difference_type std::__distance<char const*>(char const*, char const*, std::random_access_iterator_tag) [23]
+-----------------------------------------------
+                0.00    0.00      47/47          std::iterator_traits<char const*>::difference_type std::distance<char const*>(char const*, char const*) [25]
+[24]     0.0    0.00    0.00      47         std::iterator_traits<char const*>::iterator_category std::__iterator_category<char const*>(char const* const&) [24]
+-----------------------------------------------
+                0.00    0.00      47/47          void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char const*>(char const*, char const*, std::forward_iterator_tag) [20]
+[25]     0.0    0.00    0.00      47         std::iterator_traits<char const*>::difference_type std::distance<char const*>(char const*, char const*) [25]
+                0.00    0.00      47/47          std::iterator_traits<char const*>::iterator_category std::__iterator_category<char const*>(char const* const&) [24]
+                0.00    0.00      47/47          std::iterator_traits<char const*>::difference_type std::__distance<char const*>(char const*, char const*, std::random_access_iterator_tag) [23]
+-----------------------------------------------
+                0.00    0.00       1/46          getUserInput(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::unique_ptr<TestBot, std::default_delete<TestBot> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, int, bool) [54]
+                0.00    0.00       2/46          Player::Player(int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, int, int, int) [64]
+                0.00    0.00       3/46          game_loop(std::unique_ptr<Player, std::default_delete<Player> >&, std::unique_ptr<TestBot, std::default_delete<TestBot> >&) [95]
+                0.00    0.00      40/46          Player::fight(std::unique_ptr<Enemy, std::default_delete<Enemy> >&) [99]
+[26]     0.0    0.00    0.00      46         singleSpacer() [26]
+-----------------------------------------------
+                0.00    0.00       1/44          game_loop(std::unique_ptr<Player, std::default_delete<Player> >&, std::unique_ptr<TestBot, std::default_delete<TestBot> >&) [95]
+                0.00    0.00      43/44          Player::fight(std::unique_ptr<Enemy, std::default_delete<Enemy> >&) [99]
+[27]     0.0    0.00    0.00      44         Player::isAlive() const [27]
+-----------------------------------------------
+                0.00    0.00       1/43          Trainee::printPlayerStatusScreen() [108]
+                0.00    0.00      42/43          Player::fight(std::unique_ptr<Enemy, std::default_delete<Enemy> >&) [99]
+[28]     0.0    0.00    0.00      43         printHeaderScreen(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [28]
+                0.00    0.00      43/49          menuSpacer() [16]
+-----------------------------------------------
+                0.00    0.00       1/42          game_loop(std::unique_ptr<Player, std::default_delete<Player> >&, std::unique_ptr<TestBot, std::default_delete<TestBot> >&) [95]
+                0.00    0.00       1/42          Trainee::printPlayerStatusScreen() [108]
+                0.00    0.00      40/42          Player::fight(std::unique_ptr<Enemy, std::default_delete<Enemy> >&) [99]
+[29]     0.0    0.00    0.00      42         Player::getHp() const [29]
+-----------------------------------------------
+                0.00    0.00       1/22          Trainee::increaseStats() [107]
+                0.00    0.00       1/22          Trainee::printPlayerStatusScreen() [108]
+                0.00    0.00      20/22          Player::fight(std::unique_ptr<Enemy, std::default_delete<Enemy> >&) [99]
+[30]     0.0    0.00    0.00      22         Player::getAp() const [30]
+-----------------------------------------------
+                0.00    0.00       1/22          Trainee::increaseStats() [107]
+                0.00    0.00       1/22          Trainee::printPlayerStatusScreen() [108]
+                0.00    0.00      20/22          Player::fight(std::unique_ptr<Enemy, std::default_delete<Enemy> >&) [99]
+[31]     0.0    0.00    0.00      22         Player::getDp() const [31]
+-----------------------------------------------
+                0.00    0.00      21/21          std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > std::operator+<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&&, char const*) [33]
+[32]     0.0    0.00    0.00      21         std::remove_reference<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>::type&& std::move<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [32]
+-----------------------------------------------
+                0.00    0.00      21/21          Player::fight(std::unique_ptr<Enemy, std::default_delete<Enemy> >&) [99]
+[33]     0.0    0.00    0.00      21         std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > std::operator+<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&&, char const*) [33]
+                0.00    0.00      21/21          std::remove_reference<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>::type&& std::move<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [32]
+-----------------------------------------------
+                0.00    0.00      20/20          Player::fight(std::unique_ptr<Enemy, std::default_delete<Enemy> >&) [99]
+[34]     0.0    0.00    0.00      20         Player::setHp(int) [34]
+-----------------------------------------------
+                0.00    0.00      16/16          __gnu_cxx::__enable_if<std::__is_char<char>::__value, bool>::__type std::operator==<char>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [36]
+[35]     0.0    0.00    0.00      16         std::char_traits<char>::compare(char const*, char const*, unsigned long) [35]
+-----------------------------------------------
+                0.00    0.00       4/16          main [6]
+                0.00    0.00      12/16          game_loop(std::unique_ptr<Player, std::default_delete<Player> >&, std::unique_ptr<TestBot, std::default_delete<TestBot> >&) [95]
+[36]     0.0    0.00    0.00      16         __gnu_cxx::__enable_if<std::__is_char<char>::__value, bool>::__type std::operator==<char>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [36]
+                0.00    0.00      16/16          std::char_traits<char>::compare(char const*, char const*, unsigned long) [35]
+-----------------------------------------------
+                0.00    0.00      14/14          std::unique_ptr<TestBot, std::default_delete<TestBot> >::operator->() const [38]
+[37]     0.0    0.00    0.00      14         std::unique_ptr<TestBot, std::default_delete<TestBot> >::get() const [37]
+                0.00    0.00      14/14          std::__uniq_ptr_impl<TestBot, std::default_delete<TestBot> >::_M_ptr() const [39]
+-----------------------------------------------
+                0.00    0.00       1/14          main [6]
+                0.00    0.00      13/14          getUserInput(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::unique_ptr<TestBot, std::default_delete<TestBot> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, int, bool) [54]
+[38]     0.0    0.00    0.00      14         std::unique_ptr<TestBot, std::default_delete<TestBot> >::operator->() const [38]
+                0.00    0.00      14/14          std::unique_ptr<TestBot, std::default_delete<TestBot> >::get() const [37]
+-----------------------------------------------
+                0.00    0.00      14/14          std::unique_ptr<TestBot, std::default_delete<TestBot> >::get() const [37]
+[39]     0.0    0.00    0.00      14         std::__uniq_ptr_impl<TestBot, std::default_delete<TestBot> >::_M_ptr() const [39]
+                0.00    0.00      14/14          std::tuple_element<0ul, std::tuple<TestBot*, std::default_delete<TestBot> > >::type const& std::get<0ul, TestBot*, std::default_delete<TestBot> >(std::tuple<TestBot*, std::default_delete<TestBot> > const&) [43]
+-----------------------------------------------
+                0.00    0.00      14/14          std::_Tuple_impl<0ul, TestBot*, std::default_delete<TestBot> >::_M_head(std::_Tuple_impl<0ul, TestBot*, std::default_delete<TestBot> > const&) [41]
+[40]     0.0    0.00    0.00      14         std::_Head_base<0ul, TestBot*, false>::_M_head(std::_Head_base<0ul, TestBot*, false> const&) [40]
+-----------------------------------------------
+                0.00    0.00      14/14          TestBot* const& std::__get_helper<0ul, TestBot*, std::default_delete<TestBot> >(std::_Tuple_impl<0ul, TestBot*, std::default_delete<TestBot> > const&) [42]
+[41]     0.0    0.00    0.00      14         std::_Tuple_impl<0ul, TestBot*, std::default_delete<TestBot> >::_M_head(std::_Tuple_impl<0ul, TestBot*, std::default_delete<TestBot> > const&) [41]
+                0.00    0.00      14/14          std::_Head_base<0ul, TestBot*, false>::_M_head(std::_Head_base<0ul, TestBot*, false> const&) [40]
+-----------------------------------------------
+                0.00    0.00      14/14          std::tuple_element<0ul, std::tuple<TestBot*, std::default_delete<TestBot> > >::type const& std::get<0ul, TestBot*, std::default_delete<TestBot> >(std::tuple<TestBot*, std::default_delete<TestBot> > const&) [43]
+[42]     0.0    0.00    0.00      14         TestBot* const& std::__get_helper<0ul, TestBot*, std::default_delete<TestBot> >(std::_Tuple_impl<0ul, TestBot*, std::default_delete<TestBot> > const&) [42]
+                0.00    0.00      14/14          std::_Tuple_impl<0ul, TestBot*, std::default_delete<TestBot> >::_M_head(std::_Tuple_impl<0ul, TestBot*, std::default_delete<TestBot> > const&) [41]
+-----------------------------------------------
+                0.00    0.00      14/14          std::__uniq_ptr_impl<TestBot, std::default_delete<TestBot> >::_M_ptr() const [39]
+[43]     0.0    0.00    0.00      14         std::tuple_element<0ul, std::tuple<TestBot*, std::default_delete<TestBot> > >::type const& std::get<0ul, TestBot*, std::default_delete<TestBot> >(std::tuple<TestBot*, std::default_delete<TestBot> > const&) [43]
+                0.00    0.00      14/14          TestBot* const& std::__get_helper<0ul, TestBot*, std::default_delete<TestBot> >(std::_Tuple_impl<0ul, TestBot*, std::default_delete<TestBot> > const&) [42]
+-----------------------------------------------
+                0.00    0.00       5/11          std::_MakeUniq<Enemy>::__single_object std::make_unique<Enemy, int, char const (&) [8], int, int, int, int>(int&&, char const (&) [8], int&&, int&&, int&&, int&&) [170]
+                0.00    0.00       6/11          std::_MakeUniq<Trainee>::__single_object std::make_unique<Trainee, int, char const (&) [6], int, int, int, int, int>(int&&, char const (&) [6], int&&, int&&, int&&, int&&, int&&) [172]
+[44]     0.0    0.00    0.00      11         int&& std::forward<int>(std::remove_reference<int>::type&) [44]
+-----------------------------------------------
+                0.00    0.00      10/10          std::unique_ptr<Player, std::default_delete<Player> >::operator->() const [46]
+[45]     0.0    0.00    0.00      10         std::unique_ptr<Player, std::default_delete<Player> >::get() const [45]
+                0.00    0.00      10/10          std::__uniq_ptr_impl<Player, std::default_delete<Player> >::_M_ptr() const [47]
+-----------------------------------------------
+                0.00    0.00      10/10          game_loop(std::unique_ptr<Player, std::default_delete<Player> >&, std::unique_ptr<TestBot, std::default_delete<TestBot> >&) [95]
+[46]     0.0    0.00    0.00      10         std::unique_ptr<Player, std::default_delete<Player> >::operator->() const [46]
+                0.00    0.00      10/10          std::unique_ptr<Player, std::default_delete<Player> >::get() const [45]
+-----------------------------------------------
+                0.00    0.00      10/10          std::unique_ptr<Player, std::default_delete<Player> >::get() const [45]
+[47]     0.0    0.00    0.00      10         std::__uniq_ptr_impl<Player, std::default_delete<Player> >::_M_ptr() const [47]
+                0.00    0.00      10/10          std::tuple_element<0ul, std::tuple<Player*, std::default_delete<Player> > >::type const& std::get<0ul, Player*, std::default_delete<Player> >(std::tuple<Player*, std::default_delete<Player> > const&) [51]
+-----------------------------------------------
+                0.00    0.00      10/10          std::_Tuple_impl<0ul, Player*, std::default_delete<Player> >::_M_head(std::_Tuple_impl<0ul, Player*, std::default_delete<Player> > const&) [49]
+[48]     0.0    0.00    0.00      10         std::_Head_base<0ul, Player*, false>::_M_head(std::_Head_base<0ul, Player*, false> const&) [48]
+-----------------------------------------------
+                0.00    0.00      10/10          Player* const& std::__get_helper<0ul, Player*, std::default_delete<Player> >(std::_Tuple_impl<0ul, Player*, std::default_delete<Player> > const&) [50]
+[49]     0.0    0.00    0.00      10         std::_Tuple_impl<0ul, Player*, std::default_delete<Player> >::_M_head(std::_Tuple_impl<0ul, Player*, std::default_delete<Player> > const&) [49]
+                0.00    0.00      10/10          std::_Head_base<0ul, Player*, false>::_M_head(std::_Head_base<0ul, Player*, false> const&) [48]
+-----------------------------------------------
+                0.00    0.00      10/10          std::tuple_element<0ul, std::tuple<Player*, std::default_delete<Player> > >::type const& std::get<0ul, Player*, std::default_delete<Player> >(std::tuple<Player*, std::default_delete<Player> > const&) [51]
+[50]     0.0    0.00    0.00      10         Player* const& std::__get_helper<0ul, Player*, std::default_delete<Player> >(std::_Tuple_impl<0ul, Player*, std::default_delete<Player> > const&) [50]
+                0.00    0.00      10/10          std::_Tuple_impl<0ul, Player*, std::default_delete<Player> >::_M_head(std::_Tuple_impl<0ul, Player*, std::default_delete<Player> > const&) [49]
+-----------------------------------------------
+                0.00    0.00      10/10          std::__uniq_ptr_impl<Player, std::default_delete<Player> >::_M_ptr() const [47]
+[51]     0.0    0.00    0.00      10         std::tuple_element<0ul, std::tuple<Player*, std::default_delete<Player> > >::type const& std::get<0ul, Player*, std::default_delete<Player> >(std::tuple<Player*, std::default_delete<Player> > const&) [51]
+                0.00    0.00      10/10          Player* const& std::__get_helper<0ul, Player*, std::default_delete<Player> >(std::_Tuple_impl<0ul, Player*, std::default_delete<Player> > const&) [50]
+-----------------------------------------------
+                0.00    0.00       9/9           getUserInput(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::unique_ptr<TestBot, std::default_delete<TestBot> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, int, bool) [54]
+[52]     0.0    0.00    0.00       9         TestBot::getTestMode() [52]
+-----------------------------------------------
+                0.00    0.00       1/6           std::unique_ptr<Player, std::default_delete<Player> >::unique_ptr<Trainee, std::default_delete<Trainee>, void>(std::unique_ptr<Trainee, std::default_delete<Trainee> >&&) [133]
+                0.00    0.00       1/6           std::__uniq_ptr_impl<Player, std::default_delete<Player> >::__uniq_ptr_impl<std::default_delete<Trainee> >(Player*, std::default_delete<Trainee>&&) [161]
+                0.00    0.00       1/6           std::tuple<Player*, std::default_delete<Player> >::tuple<Player*&, std::default_delete<Trainee>, true>(Player*&, std::default_delete<Trainee>&&) [167]
+                0.00    0.00       1/6           std::_Tuple_impl<0ul, Player*, std::default_delete<Player> >::_Tuple_impl<Player*&, std::default_delete<Trainee>, void>(Player*&, std::default_delete<Trainee>&&) [144]
+                0.00    0.00       1/6           std::_Tuple_impl<1ul, std::default_delete<Player> >::_Tuple_impl<std::default_delete<Trainee> >(std::default_delete<Trainee>&&) [151]
+                0.00    0.00       1/6           std::_Head_base<1ul, std::default_delete<Player>, true>::_Head_base<std::default_delete<Trainee> >(std::default_delete<Trainee>&&) [124]
+[53]     0.0    0.00    0.00       6         std::default_delete<Trainee>&& std::forward<std::default_delete<Trainee> >(std::remove_reference<std::default_delete<Trainee> >::type&) [53]
+-----------------------------------------------
+                0.00    0.00       1/5           main [6]
+                0.00    0.00       4/5           game_loop(std::unique_ptr<Player, std::default_delete<Player> >&, std::unique_ptr<TestBot, std::default_delete<TestBot> >&) [95]
+[54]     0.0    0.00    0.00       5         getUserInput(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::unique_ptr<TestBot, std::default_delete<TestBot> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, int, bool) [54]
+                0.00    0.00      13/14          std::unique_ptr<TestBot, std::default_delete<TestBot> >::operator->() const [38]
+                0.00    0.00       9/9           TestBot::getTestMode() [52]
+                0.00    0.00       5/47          std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string<std::allocator<char> >(char const*, std::allocator<char> const&) [22]
+                0.00    0.00       4/4           TestBot::getNextCommand(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, int) [56]
+                0.00    0.00       1/46          singleSpacer() [26]
+                0.00    0.00       1/1           bool std::operator!=<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*) [192]
+-----------------------------------------------
+                0.00    0.00       4/4           game_loop(std::unique_ptr<Player, std::default_delete<Player> >&, std::unique_ptr<TestBot, std::default_delete<TestBot> >&) [95]
+[55]     0.0    0.00    0.00       4         printFightScreen(int) [55]
+                0.00    0.00       4/49          menuSpacer() [16]
+-----------------------------------------------
+                0.00    0.00       4/4           getUserInput(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::unique_ptr<TestBot, std::default_delete<TestBot> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, int, bool) [54]
+[56]     0.0    0.00    0.00       4         TestBot::getNextCommand(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, int) [56]
+-----------------------------------------------
+                0.00    0.00       4/4           game_loop(std::unique_ptr<Player, std::default_delete<Player> >&, std::unique_ptr<TestBot, std::default_delete<TestBot> >&) [95]
+[57]     0.0    0.00    0.00       4         Player::getPlayTime() const [57]
+-----------------------------------------------
+                0.00    0.00       3/3           std::_Tuple_impl<0ul, Trainee*, std::default_delete<Trainee> >::_M_head(std::_Tuple_impl<0ul, Trainee*, std::default_delete<Trainee> >&) [59]
+[58]     0.0    0.00    0.00       3         std::_Head_base<0ul, Trainee*, false>::_M_head(std::_Head_base<0ul, Trainee*, false>&) [58]
+-----------------------------------------------
+                0.00    0.00       3/3           Trainee*& std::__get_helper<0ul, Trainee*, std::default_delete<Trainee> >(std::_Tuple_impl<0ul, Trainee*, std::default_delete<Trainee> >&) [61]
+[59]     0.0    0.00    0.00       3         std::_Tuple_impl<0ul, Trainee*, std::default_delete<Trainee> >::_M_head(std::_Tuple_impl<0ul, Trainee*, std::default_delete<Trainee> >&) [59]
+                0.00    0.00       3/3           std::_Head_base<0ul, Trainee*, false>::_M_head(std::_Head_base<0ul, Trainee*, false>&) [58]
+-----------------------------------------------
+                0.00    0.00       1/3           std::unique_ptr<Trainee, std::default_delete<Trainee> >::~unique_ptr() [141]
+                0.00    0.00       1/3           std::unique_ptr<Trainee, std::default_delete<Trainee> >::release() [139]
+                0.00    0.00       1/3           std::__uniq_ptr_impl<Trainee, std::default_delete<Trainee> >::__uniq_ptr_impl(Trainee*) [165]
+[60]     0.0    0.00    0.00       3         std::__uniq_ptr_impl<Trainee, std::default_delete<Trainee> >::_M_ptr() [60]
+                0.00    0.00       3/3           std::tuple_element<0ul, std::tuple<Trainee*, std::default_delete<Trainee> > >::type& std::get<0ul, Trainee*, std::default_delete<Trainee> >(std::tuple<Trainee*, std::default_delete<Trainee> >&) [62]
+-----------------------------------------------
+                0.00    0.00       3/3           std::tuple_element<0ul, std::tuple<Trainee*, std::default_delete<Trainee> > >::type& std::get<0ul, Trainee*, std::default_delete<Trainee> >(std::tuple<Trainee*, std::default_delete<Trainee> >&) [62]
+[61]     0.0    0.00    0.00       3         Trainee*& std::__get_helper<0ul, Trainee*, std::default_delete<Trainee> >(std::_Tuple_impl<0ul, Trainee*, std::default_delete<Trainee> >&) [61]
+                0.00    0.00       3/3           std::_Tuple_impl<0ul, Trainee*, std::default_delete<Trainee> >::_M_head(std::_Tuple_impl<0ul, Trainee*, std::default_delete<Trainee> >&) [59]
+-----------------------------------------------
+                0.00    0.00       3/3           std::__uniq_ptr_impl<Trainee, std::default_delete<Trainee> >::_M_ptr() [60]
+[62]     0.0    0.00    0.00       3         std::tuple_element<0ul, std::tuple<Trainee*, std::default_delete<Trainee> > >::type& std::get<0ul, Trainee*, std::default_delete<Trainee> >(std::tuple<Trainee*, std::default_delete<Trainee> >&) [62]
+                0.00    0.00       3/3           Trainee*& std::__get_helper<0ul, Trainee*, std::default_delete<Trainee> >(std::_Tuple_impl<0ul, Trainee*, std::default_delete<Trainee> >&) [61]
+-----------------------------------------------
+                0.00    0.00       1/3           std::tuple<Player*, std::default_delete<Player> >::tuple<Player*&, std::default_delete<Trainee>, true>(Player*&, std::default_delete<Trainee>&&) [167]
+                0.00    0.00       1/3           std::_Tuple_impl<0ul, Player*, std::default_delete<Player> >::_Tuple_impl<Player*&, std::default_delete<Trainee>, void>(Player*&, std::default_delete<Trainee>&&) [144]
+                0.00    0.00       1/3           std::_Head_base<0ul, Player*, false>::_Head_base<Player*&>(Player*&) [117]
+[63]     0.0    0.00    0.00       3         Player*& std::forward<Player*&>(std::remove_reference<Player*&>::type&) [63]
+-----------------------------------------------
+                0.00    0.00       1/2           Enemy::Enemy(int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, int, int, int) [96]
+                0.00    0.00       1/2           Trainee::Trainee(int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, int, int, int, int) [109]
+[64]     0.0    0.00    0.00       2         Player::Player(int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, int, int, int) [64]
+                0.00    0.00       2/46          singleSpacer() [26]
+-----------------------------------------------
+                0.00    0.00       1/2           std::default_delete<Player>::operator()(Player*) const [112]
+                0.00    0.00       1/2           Enemy::~Enemy() [97]
+[65]     0.0    0.00    0.00       2         Player::~Player() [65]
+-----------------------------------------------
+                0.00    0.00       1/2           game_loop(std::unique_ptr<Player, std::default_delete<Player> >&, std::unique_ptr<TestBot, std::default_delete<TestBot> >&) [95]
+                0.00    0.00       1/2           Trainee::printPlayerStatusScreen() [108]
+[66]     0.0    0.00    0.00       2         Player::getLevel() const [66]
+-----------------------------------------------
+                0.00    0.00       1/2           Trainee::increaseStats() [107]
+                0.00    0.00       1/2           Trainee::printPlayerStatusScreen() [108]
+[67]     0.0    0.00    0.00       2         Player::getMax_hp() const [67]
+-----------------------------------------------
+                0.00    0.00       2/2           std::_Tuple_impl<0ul, Enemy*, std::default_delete<Enemy> >::_M_head(std::_Tuple_impl<0ul, Enemy*, std::default_delete<Enemy> >&) [70]
+[68]     0.0    0.00    0.00       2         std::_Head_base<0ul, Enemy*, false>::_M_head(std::_Head_base<0ul, Enemy*, false>&) [68]
+-----------------------------------------------
+                0.00    0.00       2/2           std::_Tuple_impl<0ul, TestBot*, std::default_delete<TestBot> >::_M_head(std::_Tuple_impl<0ul, TestBot*, std::default_delete<TestBot> >&) [71]
+[69]     0.0    0.00    0.00       2         std::_Head_base<0ul, TestBot*, false>::_M_head(std::_Head_base<0ul, TestBot*, false>&) [69]
+-----------------------------------------------
+                0.00    0.00       2/2           Enemy*& std::__get_helper<0ul, Enemy*, std::default_delete<Enemy> >(std::_Tuple_impl<0ul, Enemy*, std::default_delete<Enemy> >&) [74]
+[70]     0.0    0.00    0.00       2         std::_Tuple_impl<0ul, Enemy*, std::default_delete<Enemy> >::_M_head(std::_Tuple_impl<0ul, Enemy*, std::default_delete<Enemy> >&) [70]
+                0.00    0.00       2/2           std::_Head_base<0ul, Enemy*, false>::_M_head(std::_Head_base<0ul, Enemy*, false>&) [68]
+-----------------------------------------------
+                0.00    0.00       2/2           TestBot*& std::__get_helper<0ul, TestBot*, std::default_delete<TestBot> >(std::_Tuple_impl<0ul, TestBot*, std::default_delete<TestBot> >&) [75]
+[71]     0.0    0.00    0.00       2         std::_Tuple_impl<0ul, TestBot*, std::default_delete<TestBot> >::_M_head(std::_Tuple_impl<0ul, TestBot*, std::default_delete<TestBot> >&) [71]
+                0.00    0.00       2/2           std::_Head_base<0ul, TestBot*, false>::_M_head(std::_Head_base<0ul, TestBot*, false>&) [69]
+-----------------------------------------------
+                0.00    0.00       1/2           std::unique_ptr<Enemy, std::default_delete<Enemy> >::~unique_ptr() [131]
+                0.00    0.00       1/2           std::__uniq_ptr_impl<Enemy, std::default_delete<Enemy> >::__uniq_ptr_impl(Enemy*) [158]
+[72]     0.0    0.00    0.00       2         std::__uniq_ptr_impl<Enemy, std::default_delete<Enemy> >::_M_ptr() [72]
+                0.00    0.00       2/2           std::tuple_element<0ul, std::tuple<Enemy*, std::default_delete<Enemy> > >::type& std::get<0ul, Enemy*, std::default_delete<Enemy> >(std::tuple<Enemy*, std::default_delete<Enemy> >&) [76]
+-----------------------------------------------
+                0.00    0.00       1/2           std::unique_ptr<TestBot, std::default_delete<TestBot> >::~unique_ptr() [137]
+                0.00    0.00       1/2           std::__uniq_ptr_impl<TestBot, std::default_delete<TestBot> >::__uniq_ptr_impl(TestBot*) [163]
+[73]     0.0    0.00    0.00       2         std::__uniq_ptr_impl<TestBot, std::default_delete<TestBot> >::_M_ptr() [73]
+                0.00    0.00       2/2           std::tuple_element<0ul, std::tuple<TestBot*, std::default_delete<TestBot> > >::type& std::get<0ul, TestBot*, std::default_delete<TestBot> >(std::tuple<TestBot*, std::default_delete<TestBot> >&) [77]
+-----------------------------------------------
+                0.00    0.00       2/2           std::tuple_element<0ul, std::tuple<Enemy*, std::default_delete<Enemy> > >::type& std::get<0ul, Enemy*, std::default_delete<Enemy> >(std::tuple<Enemy*, std::default_delete<Enemy> >&) [76]
+[74]     0.0    0.00    0.00       2         Enemy*& std::__get_helper<0ul, Enemy*, std::default_delete<Enemy> >(std::_Tuple_impl<0ul, Enemy*, std::default_delete<Enemy> >&) [74]
+                0.00    0.00       2/2           std::_Tuple_impl<0ul, Enemy*, std::default_delete<Enemy> >::_M_head(std::_Tuple_impl<0ul, Enemy*, std::default_delete<Enemy> >&) [70]
+-----------------------------------------------
+                0.00    0.00       2/2           std::tuple_element<0ul, std::tuple<TestBot*, std::default_delete<TestBot> > >::type& std::get<0ul, TestBot*, std::default_delete<TestBot> >(std::tuple<TestBot*, std::default_delete<TestBot> >&) [77]
+[75]     0.0    0.00    0.00       2         TestBot*& std::__get_helper<0ul, TestBot*, std::default_delete<TestBot> >(std::_Tuple_impl<0ul, TestBot*, std::default_delete<TestBot> >&) [75]
+                0.00    0.00       2/2           std::_Tuple_impl<0ul, TestBot*, std::default_delete<TestBot> >::_M_head(std::_Tuple_impl<0ul, TestBot*, std::default_delete<TestBot> >&) [71]
+-----------------------------------------------
+                0.00    0.00       2/2           std::__uniq_ptr_impl<Enemy, std::default_delete<Enemy> >::_M_ptr() [72]
+[76]     0.0    0.00    0.00       2         std::tuple_element<0ul, std::tuple<Enemy*, std::default_delete<Enemy> > >::type& std::get<0ul, Enemy*, std::default_delete<Enemy> >(std::tuple<Enemy*, std::default_delete<Enemy> >&) [76]
+                0.00    0.00       2/2           Enemy*& std::__get_helper<0ul, Enemy*, std::default_delete<Enemy> >(std::_Tuple_impl<0ul, Enemy*, std::default_delete<Enemy> >&) [74]
+-----------------------------------------------
+                0.00    0.00       2/2           std::__uniq_ptr_impl<TestBot, std::default_delete<TestBot> >::_M_ptr() [73]
+[77]     0.0    0.00    0.00       2         std::tuple_element<0ul, std::tuple<TestBot*, std::default_delete<TestBot> > >::type& std::get<0ul, TestBot*, std::default_delete<TestBot> >(std::tuple<TestBot*, std::default_delete<TestBot> >&) [77]
+                0.00    0.00       2/2           TestBot*& std::__get_helper<0ul, TestBot*, std::default_delete<TestBot> >(std::_Tuple_impl<0ul, TestBot*, std::default_delete<TestBot> >&) [75]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [417]
+[78]     0.0    0.00    0.00       1         _GLOBAL__sub_I__Z12getUserInputNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERSt10unique_ptrI7TestBotSt14default_deleteIS6_EEPS4_ib [78]
+                0.00    0.00       1/1           __static_initialization_and_destruction_0(int, int) [87]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [417]
+[79]     0.0    0.00    0.00       1         _GLOBAL__sub_I__Z12singleSpacerv [79]
+                0.00    0.00       1/1           __static_initialization_and_destruction_0(int, int) [89]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [417]
+[80]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN4MageC2EiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEiiiii [80]
+                0.00    0.00       1/1           __static_initialization_and_destruction_0(int, int) [92]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [417]
+[81]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN5EnemyC2EiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEiiii [81]
+                0.00    0.00       1/1           __static_initialization_and_destruction_0(int, int) [90]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [417]
+[82]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN6PlayerC2EiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEiiii [82]
+                0.00    0.00       1/1           __static_initialization_and_destruction_0(int, int) [88]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [417]
+[83]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN7FighterC2EiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEiiiii [83]
+                0.00    0.00       1/1           __static_initialization_and_destruction_0(int, int) [93]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [417]
+[84]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN7TestBotC2Eb [84]
+                0.00    0.00       1/1           __static_initialization_and_destruction_0(int, int) [94]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [417]
+[85]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN7TraineeC2EiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEiiiii [85]
+                0.00    0.00       1/1           __static_initialization_and_destruction_0(int, int) [91]
+-----------------------------------------------
+                0.00    0.00       1/1           main [6]
+[86]     0.0    0.00    0.00       1         printMenuScreen() [86]
+                0.00    0.00       1/49          menuSpacer() [16]
+-----------------------------------------------
+                0.00    0.00       1/1           _GLOBAL__sub_I__Z12getUserInputNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERSt10unique_ptrI7TestBotSt14default_deleteIS6_EEPS4_ib [78]
+[87]     0.0    0.00    0.00       1         __static_initialization_and_destruction_0(int, int) [87]
+                0.00    0.00       4/47          std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string<std::allocator<char> >(char const*, std::allocator<char> const&) [22]
+-----------------------------------------------
+                0.00    0.00       1/1           _GLOBAL__sub_I__ZN6PlayerC2EiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEiiii [82]
+[88]     0.0    0.00    0.00       1         __static_initialization_and_destruction_0(int, int) [88]
+-----------------------------------------------
+                0.00    0.00       1/1           _GLOBAL__sub_I__Z12singleSpacerv [79]
+[89]     0.0    0.00    0.00       1         __static_initialization_and_destruction_0(int, int) [89]
+-----------------------------------------------
+                0.00    0.00       1/1           _GLOBAL__sub_I__ZN5EnemyC2EiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEiiii [81]
+[90]     0.0    0.00    0.00       1         __static_initialization_and_destruction_0(int, int) [90]
+-----------------------------------------------
+                0.00    0.00       1/1           _GLOBAL__sub_I__ZN7TraineeC2EiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEiiiii [85]
+[91]     0.0    0.00    0.00       1         __static_initialization_and_destruction_0(int, int) [91]
+-----------------------------------------------
+                0.00    0.00       1/1           _GLOBAL__sub_I__ZN4MageC2EiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEiiiii [80]
+[92]     0.0    0.00    0.00       1         __static_initialization_and_destruction_0(int, int) [92]
+-----------------------------------------------
+                0.00    0.00       1/1           _GLOBAL__sub_I__ZN7FighterC2EiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEiiiii [83]
+[93]     0.0    0.00    0.00       1         __static_initialization_and_destruction_0(int, int) [93]
+-----------------------------------------------
+                0.00    0.00       1/1           _GLOBAL__sub_I__ZN7TestBotC2Eb [84]
+[94]     0.0    0.00    0.00       1         __static_initialization_and_destruction_0(int, int) [94]
+-----------------------------------------------
+                0.00    0.00       1/1           main [6]
+[95]     0.0    0.00    0.00       1         game_loop(std::unique_ptr<Player, std::default_delete<Player> >&, std::unique_ptr<TestBot, std::default_delete<TestBot> >&) [95]
+                0.00    0.00      12/16          __gnu_cxx::__enable_if<std::__is_char<char>::__value, bool>::__type std::operator==<char>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [36]
+                0.00    0.00      10/10          std::unique_ptr<Player, std::default_delete<Player> >::operator->() const [46]
+                0.00    0.00       9/47          std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string<std::allocator<char> >(char const*, std::allocator<char> const&) [22]
+                0.00    0.00       4/4           Player::getPlayTime() const [57]
+                0.00    0.00       4/4           printFightScreen(int) [55]
+                0.00    0.00       4/5           getUserInput(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::unique_ptr<TestBot, std::default_delete<TestBot> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, int, bool) [54]
+                0.00    0.00       3/46          singleSpacer() [26]
+                0.00    0.00       1/1           std::_MakeUniq<Enemy>::__single_object std::make_unique<Enemy, int, char const (&) [8], int, int, int, int>(int&&, char const (&) [8], int&&, int&&, int&&, int&&) [170]
+                0.00    0.00       1/1           Player::fight(std::unique_ptr<Enemy, std::default_delete<Enemy> >&) [99]
+                0.00    0.00       1/42          Player::getHp() const [29]
+                0.00    0.00       1/44          Player::isAlive() const [27]
+                0.00    0.00       1/2           Player::getLevel() const [66]
+                0.00    0.00       1/1           std::unique_ptr<Enemy, std::default_delete<Enemy> >::~unique_ptr() [131]
+                0.00    0.00       1/1           Trainee::printPlayerStatusScreen() [108]
+                0.00    0.00       1/1           Player::rest() [98]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_MakeUniq<Enemy>::__single_object std::make_unique<Enemy, int, char const (&) [8], int, int, int, int>(int&&, char const (&) [8], int&&, int&&, int&&, int&&) [170]
+[96]     0.0    0.00    0.00       1         Enemy::Enemy(int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, int, int, int) [96]
+                0.00    0.00       1/2           Player::Player(int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, int, int, int) [64]
+-----------------------------------------------
+                0.00    0.00       1/1           std::default_delete<Enemy>::operator()(Enemy*) const [111]
+[97]     0.0    0.00    0.00       1         Enemy::~Enemy() [97]
+                0.00    0.00       1/2           Player::~Player() [65]
+-----------------------------------------------
+                0.00    0.00       1/1           game_loop(std::unique_ptr<Player, std::default_delete<Player> >&, std::unique_ptr<TestBot, std::default_delete<TestBot> >&) [95]
+[98]     0.0    0.00    0.00       1         Player::rest() [98]
+-----------------------------------------------
+                0.00    0.00       1/1           game_loop(std::unique_ptr<Player, std::default_delete<Player> >&, std::unique_ptr<TestBot, std::default_delete<TestBot> >&) [95]
+[99]     0.0    0.00    0.00       1         Player::fight(std::unique_ptr<Enemy, std::default_delete<Enemy> >&) [99]
+                0.00    0.00     182/182         std::unique_ptr<Enemy, std::default_delete<Enemy> >::operator->() const [9]
+                0.00    0.00      61/62          Player::getName[abi:cxx11]() const [15]
+                0.00    0.00      43/44          Player::isAlive() const [27]
+                0.00    0.00      42/43          printHeaderScreen(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [28]
+                0.00    0.00      40/42          Player::getHp() const [29]
+                0.00    0.00      40/46          singleSpacer() [26]
+                0.00    0.00      21/47          std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string<std::allocator<char> >(char const*, std::allocator<char> const&) [22]
+                0.00    0.00      21/21          std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > std::operator+<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&&, char const*) [33]
+                0.00    0.00      20/22          Player::getDp() const [31]
+                0.00    0.00      20/20          Player::setHp(int) [34]
+                0.00    0.00      20/22          Player::getAp() const [30]
+                0.00    0.00       1/1           Player::levelUp() [102]
+                0.00    0.00       1/1           Trainee::increaseStats() [107]
+-----------------------------------------------
+                0.00    0.00       1/1           Trainee::increaseStats() [107]
+[100]    0.0    0.00    0.00       1         Player::setAp(int) [100]
+-----------------------------------------------
+                0.00    0.00       1/1           Trainee::increaseStats() [107]
+[101]    0.0    0.00    0.00       1         Player::setDp(int) [101]
+-----------------------------------------------
+                0.00    0.00       1/1           Player::fight(std::unique_ptr<Enemy, std::default_delete<Enemy> >&) [99]
+[102]    0.0    0.00    0.00       1         Player::levelUp() [102]
+-----------------------------------------------
+                0.00    0.00       1/1           Trainee::Trainee(int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, int, int, int, int) [109]
+[103]    0.0    0.00    0.00       1         Player::setLevel(int) [103]
+-----------------------------------------------
+                0.00    0.00       1/1           Trainee::increaseStats() [107]
+[104]    0.0    0.00    0.00       1         Player::setMax_hp(int) [104]
+-----------------------------------------------
+                0.00    0.00       1/1           main [6]
+[105]    0.0    0.00    0.00       1         TestBot::setTestMode(bool) [105]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_MakeUniq<TestBot>::__single_object std::make_unique<TestBot, bool>(bool&&) [171]
+[106]    0.0    0.00    0.00       1         TestBot::TestBot(bool) [106]
+-----------------------------------------------
+                0.00    0.00       1/1           Player::fight(std::unique_ptr<Enemy, std::default_delete<Enemy> >&) [99]
+[107]    0.0    0.00    0.00       1         Trainee::increaseStats() [107]
+                0.00    0.00       1/22          Player::getAp() const [30]
+                0.00    0.00       1/1           Player::setAp(int) [100]
+                0.00    0.00       1/22          Player::getDp() const [31]
+                0.00    0.00       1/1           Player::setDp(int) [101]
+                0.00    0.00       1/2           Player::getMax_hp() const [67]
+                0.00    0.00       1/1           Player::setMax_hp(int) [104]
+-----------------------------------------------
+                0.00    0.00       1/1           game_loop(std::unique_ptr<Player, std::default_delete<Player> >&, std::unique_ptr<TestBot, std::default_delete<TestBot> >&) [95]
+[108]    0.0    0.00    0.00       1         Trainee::printPlayerStatusScreen() [108]
+                0.00    0.00       1/47          std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string<std::allocator<char> >(char const*, std::allocator<char> const&) [22]
+                0.00    0.00       1/43          printHeaderScreen(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) [28]
+                0.00    0.00       1/49          menuSpacer() [16]
+                0.00    0.00       1/62          Player::getName[abi:cxx11]() const [15]
+                0.00    0.00       1/42          Player::getHp() const [29]
+                0.00    0.00       1/22          Player::getAp() const [30]
+                0.00    0.00       1/22          Player::getDp() const [31]
+                0.00    0.00       1/2           Player::getMax_hp() const [67]
+                0.00    0.00       1/2           Player::getLevel() const [66]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_MakeUniq<Trainee>::__single_object std::make_unique<Trainee, int, char const (&) [6], int, int, int, int, int>(int&&, char const (&) [6], int&&, int&&, int&&, int&&, int&&) [172]
+[109]    0.0    0.00    0.00       1         Trainee::Trainee(int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, int, int, int, int) [109]
+                0.00    0.00       1/2           Player::Player(int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, int, int, int) [64]
+                0.00    0.00       1/1           Player::setLevel(int) [103]
+-----------------------------------------------
+                0.00    0.00       1/1           std::unique_ptr<Trainee, std::default_delete<Trainee> >::release() [139]
+[110]    0.0    0.00    0.00       1         std::unique_ptr<Trainee, std::default_delete<Trainee> >::get() const [110]
+                0.00    0.00       1/1           std::__uniq_ptr_impl<Trainee, std::default_delete<Trainee> >::_M_ptr() const [114]
+-----------------------------------------------
+                0.00    0.00       1/1           std::unique_ptr<Enemy, std::default_delete<Enemy> >::~unique_ptr() [131]
+[111]    0.0    0.00    0.00       1         std::default_delete<Enemy>::operator()(Enemy*) const [111]
+                0.00    0.00       1/1           Enemy::~Enemy() [97]
+-----------------------------------------------
+                0.00    0.00       1/1           std::unique_ptr<Player, std::default_delete<Player> >::~unique_ptr() [134]
+[112]    0.0    0.00    0.00       1         std::default_delete<Player>::operator()(Player*) const [112]
+                0.00    0.00       1/2           Player::~Player() [65]
+-----------------------------------------------
+                0.00    0.00       1/1           std::unique_ptr<TestBot, std::default_delete<TestBot> >::~unique_ptr() [137]
+[113]    0.0    0.00    0.00       1         std::default_delete<TestBot>::operator()(TestBot*) const [113]
+-----------------------------------------------
+                0.00    0.00       1/1           std::unique_ptr<Trainee, std::default_delete<Trainee> >::get() const [110]
+[114]    0.0    0.00    0.00       1         std::__uniq_ptr_impl<Trainee, std::default_delete<Trainee> >::_M_ptr() const [114]
+                0.00    0.00       1/1           std::tuple_element<0ul, std::tuple<Trainee*, std::default_delete<Trainee> > >::type const& std::get<0ul, Trainee*, std::default_delete<Trainee> >(std::tuple<Trainee*, std::default_delete<Trainee> > const&) [180]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Tuple_impl<0ul, Enemy*, std::default_delete<Enemy> >::_Tuple_impl() [142]
+[115]    0.0    0.00    0.00       1         std::_Head_base<0ul, Enemy*, false>::_Head_base() [115]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Tuple_impl<0ul, Player*, std::default_delete<Player> >::_M_head(std::_Tuple_impl<0ul, Player*, std::default_delete<Player> >&) [143]
+[116]    0.0    0.00    0.00       1         std::_Head_base<0ul, Player*, false>::_M_head(std::_Head_base<0ul, Player*, false>&) [116]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Tuple_impl<0ul, Player*, std::default_delete<Player> >::_Tuple_impl<Player*&, std::default_delete<Trainee>, void>(Player*&, std::default_delete<Trainee>&&) [144]
+[117]    0.0    0.00    0.00       1         std::_Head_base<0ul, Player*, false>::_Head_base<Player*&>(Player*&) [117]
+                0.00    0.00       1/3           Player*& std::forward<Player*&>(std::remove_reference<Player*&>::type&) [63]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Tuple_impl<0ul, TestBot*, std::default_delete<TestBot> >::_Tuple_impl() [145]
+[118]    0.0    0.00    0.00       1         std::_Head_base<0ul, TestBot*, false>::_Head_base() [118]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Tuple_impl<0ul, Trainee*, std::default_delete<Trainee> >::_M_head(std::_Tuple_impl<0ul, Trainee*, std::default_delete<Trainee> > const&) [146]
+[119]    0.0    0.00    0.00       1         std::_Head_base<0ul, Trainee*, false>::_M_head(std::_Head_base<0ul, Trainee*, false> const&) [119]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Tuple_impl<0ul, Trainee*, std::default_delete<Trainee> >::_Tuple_impl() [147]
+[120]    0.0    0.00    0.00       1         std::_Head_base<0ul, Trainee*, false>::_Head_base() [120]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Tuple_impl<1ul, std::default_delete<Enemy> >::_M_head(std::_Tuple_impl<1ul, std::default_delete<Enemy> >&) [148]
+[121]    0.0    0.00    0.00       1         std::_Head_base<1ul, std::default_delete<Enemy>, true>::_M_head(std::_Head_base<1ul, std::default_delete<Enemy>, true>&) [121]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Tuple_impl<1ul, std::default_delete<Enemy> >::_Tuple_impl() [149]
+[122]    0.0    0.00    0.00       1         std::_Head_base<1ul, std::default_delete<Enemy>, true>::_Head_base() [122]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Tuple_impl<1ul, std::default_delete<Player> >::_M_head(std::_Tuple_impl<1ul, std::default_delete<Player> >&) [150]
+[123]    0.0    0.00    0.00       1         std::_Head_base<1ul, std::default_delete<Player>, true>::_M_head(std::_Head_base<1ul, std::default_delete<Player>, true>&) [123]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Tuple_impl<1ul, std::default_delete<Player> >::_Tuple_impl<std::default_delete<Trainee> >(std::default_delete<Trainee>&&) [151]
+[124]    0.0    0.00    0.00       1         std::_Head_base<1ul, std::default_delete<Player>, true>::_Head_base<std::default_delete<Trainee> >(std::default_delete<Trainee>&&) [124]
+                0.00    0.00       1/6           std::default_delete<Trainee>&& std::forward<std::default_delete<Trainee> >(std::remove_reference<std::default_delete<Trainee> >::type&) [53]
+                0.00    0.00       1/1           std::default_delete<Player>::default_delete<Trainee, void>(std::default_delete<Trainee> const&) [156]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Tuple_impl<1ul, std::default_delete<TestBot> >::_M_head(std::_Tuple_impl<1ul, std::default_delete<TestBot> >&) [152]
+[125]    0.0    0.00    0.00       1         std::_Head_base<1ul, std::default_delete<TestBot>, true>::_M_head(std::_Head_base<1ul, std::default_delete<TestBot>, true>&) [125]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Tuple_impl<1ul, std::default_delete<TestBot> >::_Tuple_impl() [153]
+[126]    0.0    0.00    0.00       1         std::_Head_base<1ul, std::default_delete<TestBot>, true>::_Head_base() [126]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Tuple_impl<1ul, std::default_delete<Trainee> >::_M_head(std::_Tuple_impl<1ul, std::default_delete<Trainee> >&) [154]
+[127]    0.0    0.00    0.00       1         std::_Head_base<1ul, std::default_delete<Trainee>, true>::_M_head(std::_Head_base<1ul, std::default_delete<Trainee>, true>&) [127]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Tuple_impl<1ul, std::default_delete<Trainee> >::_Tuple_impl() [155]
+[128]    0.0    0.00    0.00       1         std::_Head_base<1ul, std::default_delete<Trainee>, true>::_Head_base() [128]
+-----------------------------------------------
+                0.00    0.00       1/1           std::unique_ptr<Enemy, std::default_delete<Enemy> >::~unique_ptr() [131]
+[129]    0.0    0.00    0.00       1         std::unique_ptr<Enemy, std::default_delete<Enemy> >::get_deleter() [129]
+                0.00    0.00       1/1           std::__uniq_ptr_impl<Enemy, std::default_delete<Enemy> >::_M_deleter() [157]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_MakeUniq<Enemy>::__single_object std::make_unique<Enemy, int, char const (&) [8], int, int, int, int>(int&&, char const (&) [8], int&&, int&&, int&&, int&&) [170]
+[130]    0.0    0.00    0.00       1         std::unique_ptr<Enemy, std::default_delete<Enemy> >::unique_ptr<std::default_delete<Enemy>, void>(Enemy*) [130]
+                0.00    0.00       1/1           std::__uniq_ptr_impl<Enemy, std::default_delete<Enemy> >::__uniq_ptr_impl(Enemy*) [158]
+-----------------------------------------------
+                0.00    0.00       1/1           game_loop(std::unique_ptr<Player, std::default_delete<Player> >&, std::unique_ptr<TestBot, std::default_delete<TestBot> >&) [95]
+[131]    0.0    0.00    0.00       1         std::unique_ptr<Enemy, std::default_delete<Enemy> >::~unique_ptr() [131]
+                0.00    0.00       1/2           std::__uniq_ptr_impl<Enemy, std::default_delete<Enemy> >::_M_ptr() [72]
+                0.00    0.00       1/1           std::unique_ptr<Enemy, std::default_delete<Enemy> >::get_deleter() [129]
+                0.00    0.00       1/1           std::remove_reference<Enemy*&>::type&& std::move<Enemy*&>(Enemy*&) [185]
+                0.00    0.00       1/1           std::default_delete<Enemy>::operator()(Enemy*) const [111]
+-----------------------------------------------
+                0.00    0.00       1/1           std::unique_ptr<Player, std::default_delete<Player> >::~unique_ptr() [134]
+[132]    0.0    0.00    0.00       1         std::unique_ptr<Player, std::default_delete<Player> >::get_deleter() [132]
+                0.00    0.00       1/1           std::__uniq_ptr_impl<Player, std::default_delete<Player> >::_M_deleter() [159]
+-----------------------------------------------
+                0.00    0.00       1/1           main [6]
+[133]    0.0    0.00    0.00       1         std::unique_ptr<Player, std::default_delete<Player> >::unique_ptr<Trainee, std::default_delete<Trainee>, void>(std::unique_ptr<Trainee, std::default_delete<Trainee> >&&) [133]
+                0.00    0.00       1/1           std::unique_ptr<Trainee, std::default_delete<Trainee> >::get_deleter() [138]
+                0.00    0.00       1/6           std::default_delete<Trainee>&& std::forward<std::default_delete<Trainee> >(std::remove_reference<std::default_delete<Trainee> >::type&) [53]
+                0.00    0.00       1/1           std::unique_ptr<Trainee, std::default_delete<Trainee> >::release() [139]
+                0.00    0.00       1/1           std::__uniq_ptr_impl<Player, std::default_delete<Player> >::__uniq_ptr_impl<std::default_delete<Trainee> >(Player*, std::default_delete<Trainee>&&) [161]
+-----------------------------------------------
+                0.00    0.00       1/1           main [6]
+[134]    0.0    0.00    0.00       1         std::unique_ptr<Player, std::default_delete<Player> >::~unique_ptr() [134]
+                0.00    0.00       1/1           std::__uniq_ptr_impl<Player, std::default_delete<Player> >::_M_ptr() [160]
+                0.00    0.00       1/1           std::unique_ptr<Player, std::default_delete<Player> >::get_deleter() [132]
+                0.00    0.00       1/1           std::default_delete<Player>::operator()(Player*) const [112]
+                0.00    0.00       1/1           std::remove_reference<Player*&>::type&& std::move<Player*&>(Player*&) [186]
+-----------------------------------------------
+                0.00    0.00       1/1           std::unique_ptr<TestBot, std::default_delete<TestBot> >::~unique_ptr() [137]
+[135]    0.0    0.00    0.00       1         std::unique_ptr<TestBot, std::default_delete<TestBot> >::get_deleter() [135]
+                0.00    0.00       1/1           std::__uniq_ptr_impl<TestBot, std::default_delete<TestBot> >::_M_deleter() [162]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_MakeUniq<TestBot>::__single_object std::make_unique<TestBot, bool>(bool&&) [171]
+[136]    0.0    0.00    0.00       1         std::unique_ptr<TestBot, std::default_delete<TestBot> >::unique_ptr<std::default_delete<TestBot>, void>(TestBot*) [136]
+                0.00    0.00       1/1           std::__uniq_ptr_impl<TestBot, std::default_delete<TestBot> >::__uniq_ptr_impl(TestBot*) [163]
+-----------------------------------------------
+                0.00    0.00       1/1           main [6]
+[137]    0.0    0.00    0.00       1         std::unique_ptr<TestBot, std::default_delete<TestBot> >::~unique_ptr() [137]
+                0.00    0.00       1/2           std::__uniq_ptr_impl<TestBot, std::default_delete<TestBot> >::_M_ptr() [73]
+                0.00    0.00       1/1           std::unique_ptr<TestBot, std::default_delete<TestBot> >::get_deleter() [135]
+                0.00    0.00       1/1           std::remove_reference<TestBot*&>::type&& std::move<TestBot*&>(TestBot*&) [187]
+                0.00    0.00       1/1           std::default_delete<TestBot>::operator()(TestBot*) const [113]
+-----------------------------------------------
+                0.00    0.00       1/1           std::unique_ptr<Player, std::default_delete<Player> >::unique_ptr<Trainee, std::default_delete<Trainee>, void>(std::unique_ptr<Trainee, std::default_delete<Trainee> >&&) [133]
+[138]    0.0    0.00    0.00       1         std::unique_ptr<Trainee, std::default_delete<Trainee> >::get_deleter() [138]
+                0.00    0.00       1/1           std::__uniq_ptr_impl<Trainee, std::default_delete<Trainee> >::_M_deleter() [164]
+-----------------------------------------------
+                0.00    0.00       1/1           std::unique_ptr<Player, std::default_delete<Player> >::unique_ptr<Trainee, std::default_delete<Trainee>, void>(std::unique_ptr<Trainee, std::default_delete<Trainee> >&&) [133]
+[139]    0.0    0.00    0.00       1         std::unique_ptr<Trainee, std::default_delete<Trainee> >::release() [139]
+                0.00    0.00       1/1           std::unique_ptr<Trainee, std::default_delete<Trainee> >::get() const [110]
+                0.00    0.00       1/3           std::__uniq_ptr_impl<Trainee, std::default_delete<Trainee> >::_M_ptr() [60]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_MakeUniq<Trainee>::__single_object std::make_unique<Trainee, int, char const (&) [6], int, int, int, int, int>(int&&, char const (&) [6], int&&, int&&, int&&, int&&, int&&) [172]
+[140]    0.0    0.00    0.00       1         std::unique_ptr<Trainee, std::default_delete<Trainee> >::unique_ptr<std::default_delete<Trainee>, void>(Trainee*) [140]
+                0.00    0.00       1/1           std::__uniq_ptr_impl<Trainee, std::default_delete<Trainee> >::__uniq_ptr_impl(Trainee*) [165]
+-----------------------------------------------
+                0.00    0.00       1/1           main [6]
+[141]    0.0    0.00    0.00       1         std::unique_ptr<Trainee, std::default_delete<Trainee> >::~unique_ptr() [141]
+                0.00    0.00       1/3           std::__uniq_ptr_impl<Trainee, std::default_delete<Trainee> >::_M_ptr() [60]
+-----------------------------------------------
+                0.00    0.00       1/1           std::tuple<Enemy*, std::default_delete<Enemy> >::tuple<Enemy*, std::default_delete<Enemy>, true>() [166]
+[142]    0.0    0.00    0.00       1         std::_Tuple_impl<0ul, Enemy*, std::default_delete<Enemy> >::_Tuple_impl() [142]
+                0.00    0.00       1/1           std::_Head_base<0ul, Enemy*, false>::_Head_base() [115]
+                0.00    0.00       1/1           std::_Tuple_impl<1ul, std::default_delete<Enemy> >::_Tuple_impl() [149]
+-----------------------------------------------
+                0.00    0.00       1/1           Player*& std::__get_helper<0ul, Player*, std::default_delete<Player> >(std::_Tuple_impl<0ul, Player*, std::default_delete<Player> >&) [173]
+[143]    0.0    0.00    0.00       1         std::_Tuple_impl<0ul, Player*, std::default_delete<Player> >::_M_head(std::_Tuple_impl<0ul, Player*, std::default_delete<Player> >&) [143]
+                0.00    0.00       1/1           std::_Head_base<0ul, Player*, false>::_M_head(std::_Head_base<0ul, Player*, false>&) [116]
+-----------------------------------------------
+                0.00    0.00       1/1           std::tuple<Player*, std::default_delete<Player> >::tuple<Player*&, std::default_delete<Trainee>, true>(Player*&, std::default_delete<Trainee>&&) [167]
+[144]    0.0    0.00    0.00       1         std::_Tuple_impl<0ul, Player*, std::default_delete<Player> >::_Tuple_impl<Player*&, std::default_delete<Trainee>, void>(Player*&, std::default_delete<Trainee>&&) [144]
+                0.00    0.00       1/6           std::default_delete<Trainee>&& std::forward<std::default_delete<Trainee> >(std::remove_reference<std::default_delete<Trainee> >::type&) [53]
+                0.00    0.00       1/1           std::_Tuple_impl<1ul, std::default_delete<Player> >::_Tuple_impl<std::default_delete<Trainee> >(std::default_delete<Trainee>&&) [151]
+                0.00    0.00       1/3           Player*& std::forward<Player*&>(std::remove_reference<Player*&>::type&) [63]
+                0.00    0.00       1/1           std::_Head_base<0ul, Player*, false>::_Head_base<Player*&>(Player*&) [117]
+-----------------------------------------------
+                0.00    0.00       1/1           std::tuple<TestBot*, std::default_delete<TestBot> >::tuple<TestBot*, std::default_delete<TestBot>, true>() [168]
+[145]    0.0    0.00    0.00       1         std::_Tuple_impl<0ul, TestBot*, std::default_delete<TestBot> >::_Tuple_impl() [145]
+                0.00    0.00       1/1           std::_Tuple_impl<1ul, std::default_delete<TestBot> >::_Tuple_impl() [153]
+                0.00    0.00       1/1           std::_Head_base<0ul, TestBot*, false>::_Head_base() [118]
+-----------------------------------------------
+                0.00    0.00       1/1           Trainee* const& std::__get_helper<0ul, Trainee*, std::default_delete<Trainee> >(std::_Tuple_impl<0ul, Trainee*, std::default_delete<Trainee> > const&) [174]
+[146]    0.0    0.00    0.00       1         std::_Tuple_impl<0ul, Trainee*, std::default_delete<Trainee> >::_M_head(std::_Tuple_impl<0ul, Trainee*, std::default_delete<Trainee> > const&) [146]
+                0.00    0.00       1/1           std::_Head_base<0ul, Trainee*, false>::_M_head(std::_Head_base<0ul, Trainee*, false> const&) [119]
+-----------------------------------------------
+                0.00    0.00       1/1           std::tuple<Trainee*, std::default_delete<Trainee> >::tuple<Trainee*, std::default_delete<Trainee>, true>() [169]
+[147]    0.0    0.00    0.00       1         std::_Tuple_impl<0ul, Trainee*, std::default_delete<Trainee> >::_Tuple_impl() [147]
+                0.00    0.00       1/1           std::_Tuple_impl<1ul, std::default_delete<Trainee> >::_Tuple_impl() [155]
+                0.00    0.00       1/1           std::_Head_base<0ul, Trainee*, false>::_Head_base() [120]
+-----------------------------------------------
+                0.00    0.00       1/1           std::default_delete<Enemy>& std::__get_helper<1ul, std::default_delete<Enemy>>(std::_Tuple_impl<1ul, std::default_delete<Enemy>>&) [175]
+[148]    0.0    0.00    0.00       1         std::_Tuple_impl<1ul, std::default_delete<Enemy> >::_M_head(std::_Tuple_impl<1ul, std::default_delete<Enemy> >&) [148]
+                0.00    0.00       1/1           std::_Head_base<1ul, std::default_delete<Enemy>, true>::_M_head(std::_Head_base<1ul, std::default_delete<Enemy>, true>&) [121]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Tuple_impl<0ul, Enemy*, std::default_delete<Enemy> >::_Tuple_impl() [142]
+[149]    0.0    0.00    0.00       1         std::_Tuple_impl<1ul, std::default_delete<Enemy> >::_Tuple_impl() [149]
+                0.00    0.00       1/1           std::_Head_base<1ul, std::default_delete<Enemy>, true>::_Head_base() [122]
+-----------------------------------------------
+                0.00    0.00       1/1           std::default_delete<Player>& std::__get_helper<1ul, std::default_delete<Player>>(std::_Tuple_impl<1ul, std::default_delete<Player>>&) [176]
+[150]    0.0    0.00    0.00       1         std::_Tuple_impl<1ul, std::default_delete<Player> >::_M_head(std::_Tuple_impl<1ul, std::default_delete<Player> >&) [150]
+                0.00    0.00       1/1           std::_Head_base<1ul, std::default_delete<Player>, true>::_M_head(std::_Head_base<1ul, std::default_delete<Player>, true>&) [123]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Tuple_impl<0ul, Player*, std::default_delete<Player> >::_Tuple_impl<Player*&, std::default_delete<Trainee>, void>(Player*&, std::default_delete<Trainee>&&) [144]
+[151]    0.0    0.00    0.00       1         std::_Tuple_impl<1ul, std::default_delete<Player> >::_Tuple_impl<std::default_delete<Trainee> >(std::default_delete<Trainee>&&) [151]
+                0.00    0.00       1/6           std::default_delete<Trainee>&& std::forward<std::default_delete<Trainee> >(std::remove_reference<std::default_delete<Trainee> >::type&) [53]
+                0.00    0.00       1/1           std::_Head_base<1ul, std::default_delete<Player>, true>::_Head_base<std::default_delete<Trainee> >(std::default_delete<Trainee>&&) [124]
+-----------------------------------------------
+                0.00    0.00       1/1           std::default_delete<TestBot>& std::__get_helper<1ul, std::default_delete<TestBot>>(std::_Tuple_impl<1ul, std::default_delete<TestBot>>&) [177]
+[152]    0.0    0.00    0.00       1         std::_Tuple_impl<1ul, std::default_delete<TestBot> >::_M_head(std::_Tuple_impl<1ul, std::default_delete<TestBot> >&) [152]
+                0.00    0.00       1/1           std::_Head_base<1ul, std::default_delete<TestBot>, true>::_M_head(std::_Head_base<1ul, std::default_delete<TestBot>, true>&) [125]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Tuple_impl<0ul, TestBot*, std::default_delete<TestBot> >::_Tuple_impl() [145]
+[153]    0.0    0.00    0.00       1         std::_Tuple_impl<1ul, std::default_delete<TestBot> >::_Tuple_impl() [153]
+                0.00    0.00       1/1           std::_Head_base<1ul, std::default_delete<TestBot>, true>::_Head_base() [126]
+-----------------------------------------------
+                0.00    0.00       1/1           std::default_delete<Trainee>& std::__get_helper<1ul, std::default_delete<Trainee>>(std::_Tuple_impl<1ul, std::default_delete<Trainee>>&) [178]
+[154]    0.0    0.00    0.00       1         std::_Tuple_impl<1ul, std::default_delete<Trainee> >::_M_head(std::_Tuple_impl<1ul, std::default_delete<Trainee> >&) [154]
+                0.00    0.00       1/1           std::_Head_base<1ul, std::default_delete<Trainee>, true>::_M_head(std::_Head_base<1ul, std::default_delete<Trainee>, true>&) [127]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Tuple_impl<0ul, Trainee*, std::default_delete<Trainee> >::_Tuple_impl() [147]
+[155]    0.0    0.00    0.00       1         std::_Tuple_impl<1ul, std::default_delete<Trainee> >::_Tuple_impl() [155]
+                0.00    0.00       1/1           std::_Head_base<1ul, std::default_delete<Trainee>, true>::_Head_base() [128]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Head_base<1ul, std::default_delete<Player>, true>::_Head_base<std::default_delete<Trainee> >(std::default_delete<Trainee>&&) [124]
+[156]    0.0    0.00    0.00       1         std::default_delete<Player>::default_delete<Trainee, void>(std::default_delete<Trainee> const&) [156]
+-----------------------------------------------
+                0.00    0.00       1/1           std::unique_ptr<Enemy, std::default_delete<Enemy> >::get_deleter() [129]
+[157]    0.0    0.00    0.00       1         std::__uniq_ptr_impl<Enemy, std::default_delete<Enemy> >::_M_deleter() [157]
+                0.00    0.00       1/1           std::tuple_element<1ul, std::tuple<Enemy*, std::default_delete<Enemy> > >::type& std::get<1ul, Enemy*, std::default_delete<Enemy> >(std::tuple<Enemy*, std::default_delete<Enemy> >&) [181]
+-----------------------------------------------
+                0.00    0.00       1/1           std::unique_ptr<Enemy, std::default_delete<Enemy> >::unique_ptr<std::default_delete<Enemy>, void>(Enemy*) [130]
+[158]    0.0    0.00    0.00       1         std::__uniq_ptr_impl<Enemy, std::default_delete<Enemy> >::__uniq_ptr_impl(Enemy*) [158]
+                0.00    0.00       1/1           std::tuple<Enemy*, std::default_delete<Enemy> >::tuple<Enemy*, std::default_delete<Enemy>, true>() [166]
+                0.00    0.00       1/2           std::__uniq_ptr_impl<Enemy, std::default_delete<Enemy> >::_M_ptr() [72]
+-----------------------------------------------
+                0.00    0.00       1/1           std::unique_ptr<Player, std::default_delete<Player> >::get_deleter() [132]
+[159]    0.0    0.00    0.00       1         std::__uniq_ptr_impl<Player, std::default_delete<Player> >::_M_deleter() [159]
+                0.00    0.00       1/1           std::tuple_element<1ul, std::tuple<Player*, std::default_delete<Player> > >::type& std::get<1ul, Player*, std::default_delete<Player> >(std::tuple<Player*, std::default_delete<Player> >&) [182]
+-----------------------------------------------
+                0.00    0.00       1/1           std::unique_ptr<Player, std::default_delete<Player> >::~unique_ptr() [134]
+[160]    0.0    0.00    0.00       1         std::__uniq_ptr_impl<Player, std::default_delete<Player> >::_M_ptr() [160]
+                0.00    0.00       1/1           std::tuple_element<0ul, std::tuple<Player*, std::default_delete<Player> > >::type& std::get<0ul, Player*, std::default_delete<Player> >(std::tuple<Player*, std::default_delete<Player> >&) [179]
+-----------------------------------------------
+                0.00    0.00       1/1           std::unique_ptr<Player, std::default_delete<Player> >::unique_ptr<Trainee, std::default_delete<Trainee>, void>(std::unique_ptr<Trainee, std::default_delete<Trainee> >&&) [133]
+[161]    0.0    0.00    0.00       1         std::__uniq_ptr_impl<Player, std::default_delete<Player> >::__uniq_ptr_impl<std::default_delete<Trainee> >(Player*, std::default_delete<Trainee>&&) [161]
+                0.00    0.00       1/6           std::default_delete<Trainee>&& std::forward<std::default_delete<Trainee> >(std::remove_reference<std::default_delete<Trainee> >::type&) [53]
+                0.00    0.00       1/1           std::tuple<Player*, std::default_delete<Player> >::tuple<Player*&, std::default_delete<Trainee>, true>(Player*&, std::default_delete<Trainee>&&) [167]
+-----------------------------------------------
+                0.00    0.00       1/1           std::unique_ptr<TestBot, std::default_delete<TestBot> >::get_deleter() [135]
+[162]    0.0    0.00    0.00       1         std::__uniq_ptr_impl<TestBot, std::default_delete<TestBot> >::_M_deleter() [162]
+                0.00    0.00       1/1           std::tuple_element<1ul, std::tuple<TestBot*, std::default_delete<TestBot> > >::type& std::get<1ul, TestBot*, std::default_delete<TestBot> >(std::tuple<TestBot*, std::default_delete<TestBot> >&) [183]
+-----------------------------------------------
+                0.00    0.00       1/1           std::unique_ptr<TestBot, std::default_delete<TestBot> >::unique_ptr<std::default_delete<TestBot>, void>(TestBot*) [136]
+[163]    0.0    0.00    0.00       1         std::__uniq_ptr_impl<TestBot, std::default_delete<TestBot> >::__uniq_ptr_impl(TestBot*) [163]
+                0.00    0.00       1/1           std::tuple<TestBot*, std::default_delete<TestBot> >::tuple<TestBot*, std::default_delete<TestBot>, true>() [168]
+                0.00    0.00       1/2           std::__uniq_ptr_impl<TestBot, std::default_delete<TestBot> >::_M_ptr() [73]
+-----------------------------------------------
+                0.00    0.00       1/1           std::unique_ptr<Trainee, std::default_delete<Trainee> >::get_deleter() [138]
+[164]    0.0    0.00    0.00       1         std::__uniq_ptr_impl<Trainee, std::default_delete<Trainee> >::_M_deleter() [164]
+                0.00    0.00       1/1           std::tuple_element<1ul, std::tuple<Trainee*, std::default_delete<Trainee> > >::type& std::get<1ul, Trainee*, std::default_delete<Trainee> >(std::tuple<Trainee*, std::default_delete<Trainee> >&) [184]
+-----------------------------------------------
+                0.00    0.00       1/1           std::unique_ptr<Trainee, std::default_delete<Trainee> >::unique_ptr<std::default_delete<Trainee>, void>(Trainee*) [140]
+[165]    0.0    0.00    0.00       1         std::__uniq_ptr_impl<Trainee, std::default_delete<Trainee> >::__uniq_ptr_impl(Trainee*) [165]
+                0.00    0.00       1/1           std::tuple<Trainee*, std::default_delete<Trainee> >::tuple<Trainee*, std::default_delete<Trainee>, true>() [169]
+                0.00    0.00       1/3           std::__uniq_ptr_impl<Trainee, std::default_delete<Trainee> >::_M_ptr() [60]
+-----------------------------------------------
+                0.00    0.00       1/1           std::__uniq_ptr_impl<Enemy, std::default_delete<Enemy> >::__uniq_ptr_impl(Enemy*) [158]
+[166]    0.0    0.00    0.00       1         std::tuple<Enemy*, std::default_delete<Enemy> >::tuple<Enemy*, std::default_delete<Enemy>, true>() [166]
+                0.00    0.00       1/1           std::_Tuple_impl<0ul, Enemy*, std::default_delete<Enemy> >::_Tuple_impl() [142]
+-----------------------------------------------
+                0.00    0.00       1/1           std::__uniq_ptr_impl<Player, std::default_delete<Player> >::__uniq_ptr_impl<std::default_delete<Trainee> >(Player*, std::default_delete<Trainee>&&) [161]
+[167]    0.0    0.00    0.00       1         std::tuple<Player*, std::default_delete<Player> >::tuple<Player*&, std::default_delete<Trainee>, true>(Player*&, std::default_delete<Trainee>&&) [167]
+                0.00    0.00       1/6           std::default_delete<Trainee>&& std::forward<std::default_delete<Trainee> >(std::remove_reference<std::default_delete<Trainee> >::type&) [53]
+                0.00    0.00       1/3           Player*& std::forward<Player*&>(std::remove_reference<Player*&>::type&) [63]
+                0.00    0.00       1/1           std::_Tuple_impl<0ul, Player*, std::default_delete<Player> >::_Tuple_impl<Player*&, std::default_delete<Trainee>, void>(Player*&, std::default_delete<Trainee>&&) [144]
+-----------------------------------------------
+                0.00    0.00       1/1           std::__uniq_ptr_impl<TestBot, std::default_delete<TestBot> >::__uniq_ptr_impl(TestBot*) [163]
+[168]    0.0    0.00    0.00       1         std::tuple<TestBot*, std::default_delete<TestBot> >::tuple<TestBot*, std::default_delete<TestBot>, true>() [168]
+                0.00    0.00       1/1           std::_Tuple_impl<0ul, TestBot*, std::default_delete<TestBot> >::_Tuple_impl() [145]
+-----------------------------------------------
+                0.00    0.00       1/1           std::__uniq_ptr_impl<Trainee, std::default_delete<Trainee> >::__uniq_ptr_impl(Trainee*) [165]
+[169]    0.0    0.00    0.00       1         std::tuple<Trainee*, std::default_delete<Trainee> >::tuple<Trainee*, std::default_delete<Trainee>, true>() [169]
+                0.00    0.00       1/1           std::_Tuple_impl<0ul, Trainee*, std::default_delete<Trainee> >::_Tuple_impl() [147]
+-----------------------------------------------
+                0.00    0.00       1/1           game_loop(std::unique_ptr<Player, std::default_delete<Player> >&, std::unique_ptr<TestBot, std::default_delete<TestBot> >&) [95]
+[170]    0.0    0.00    0.00       1         std::_MakeUniq<Enemy>::__single_object std::make_unique<Enemy, int, char const (&) [8], int, int, int, int>(int&&, char const (&) [8], int&&, int&&, int&&, int&&) [170]
+                0.00    0.00       5/11          int&& std::forward<int>(std::remove_reference<int>::type&) [44]
+                0.00    0.00       1/1           char const (&std::forward<char const (&) [8]>(std::remove_reference<char const (&) [8]>::type&)) [8] [189]
+                0.00    0.00       1/47          std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string<std::allocator<char> >(char const*, std::allocator<char> const&) [22]
+                0.00    0.00       1/1           Enemy::Enemy(int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, int, int, int) [96]
+                0.00    0.00       1/1           std::unique_ptr<Enemy, std::default_delete<Enemy> >::unique_ptr<std::default_delete<Enemy>, void>(Enemy*) [130]
+-----------------------------------------------
+                0.00    0.00       1/1           main [6]
+[171]    0.0    0.00    0.00       1         std::_MakeUniq<TestBot>::__single_object std::make_unique<TestBot, bool>(bool&&) [171]
+                0.00    0.00       1/1           bool&& std::forward<bool>(std::remove_reference<bool>::type&) [190]
+                0.00    0.00       1/1           TestBot::TestBot(bool) [106]
+                0.00    0.00       1/1           std::unique_ptr<TestBot, std::default_delete<TestBot> >::unique_ptr<std::default_delete<TestBot>, void>(TestBot*) [136]
+-----------------------------------------------
+                0.00    0.00       1/1           main [6]
+[172]    0.0    0.00    0.00       1         std::_MakeUniq<Trainee>::__single_object std::make_unique<Trainee, int, char const (&) [6], int, int, int, int, int>(int&&, char const (&) [6], int&&, int&&, int&&, int&&, int&&) [172]
+                0.00    0.00       6/11          int&& std::forward<int>(std::remove_reference<int>::type&) [44]
+                0.00    0.00       1/1           char const (&std::forward<char const (&) [6]>(std::remove_reference<char const (&) [6]>::type&)) [6] [188]
+                0.00    0.00       1/47          std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string<std::allocator<char> >(char const*, std::allocator<char> const&) [22]
+                0.00    0.00       1/1           Trainee::Trainee(int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, int, int, int, int) [109]
+                0.00    0.00       1/1           std::unique_ptr<Trainee, std::default_delete<Trainee> >::unique_ptr<std::default_delete<Trainee>, void>(Trainee*) [140]
+-----------------------------------------------
+                0.00    0.00       1/1           std::tuple_element<0ul, std::tuple<Player*, std::default_delete<Player> > >::type& std::get<0ul, Player*, std::default_delete<Player> >(std::tuple<Player*, std::default_delete<Player> >&) [179]
+[173]    0.0    0.00    0.00       1         Player*& std::__get_helper<0ul, Player*, std::default_delete<Player> >(std::_Tuple_impl<0ul, Player*, std::default_delete<Player> >&) [173]
+                0.00    0.00       1/1           std::_Tuple_impl<0ul, Player*, std::default_delete<Player> >::_M_head(std::_Tuple_impl<0ul, Player*, std::default_delete<Player> >&) [143]
+-----------------------------------------------
+                0.00    0.00       1/1           std::tuple_element<0ul, std::tuple<Trainee*, std::default_delete<Trainee> > >::type const& std::get<0ul, Trainee*, std::default_delete<Trainee> >(std::tuple<Trainee*, std::default_delete<Trainee> > const&) [180]
+[174]    0.0    0.00    0.00       1         Trainee* const& std::__get_helper<0ul, Trainee*, std::default_delete<Trainee> >(std::_Tuple_impl<0ul, Trainee*, std::default_delete<Trainee> > const&) [174]
+                0.00    0.00       1/1           std::_Tuple_impl<0ul, Trainee*, std::default_delete<Trainee> >::_M_head(std::_Tuple_impl<0ul, Trainee*, std::default_delete<Trainee> > const&) [146]
+-----------------------------------------------
+                0.00    0.00       1/1           std::tuple_element<1ul, std::tuple<Enemy*, std::default_delete<Enemy> > >::type& std::get<1ul, Enemy*, std::default_delete<Enemy> >(std::tuple<Enemy*, std::default_delete<Enemy> >&) [181]
+[175]    0.0    0.00    0.00       1         std::default_delete<Enemy>& std::__get_helper<1ul, std::default_delete<Enemy>>(std::_Tuple_impl<1ul, std::default_delete<Enemy>>&) [175]
+                0.00    0.00       1/1           std::_Tuple_impl<1ul, std::default_delete<Enemy> >::_M_head(std::_Tuple_impl<1ul, std::default_delete<Enemy> >&) [148]
+-----------------------------------------------
+                0.00    0.00       1/1           std::tuple_element<1ul, std::tuple<Player*, std::default_delete<Player> > >::type& std::get<1ul, Player*, std::default_delete<Player> >(std::tuple<Player*, std::default_delete<Player> >&) [182]
+[176]    0.0    0.00    0.00       1         std::default_delete<Player>& std::__get_helper<1ul, std::default_delete<Player>>(std::_Tuple_impl<1ul, std::default_delete<Player>>&) [176]
+                0.00    0.00       1/1           std::_Tuple_impl<1ul, std::default_delete<Player> >::_M_head(std::_Tuple_impl<1ul, std::default_delete<Player> >&) [150]
+-----------------------------------------------
+                0.00    0.00       1/1           std::tuple_element<1ul, std::tuple<TestBot*, std::default_delete<TestBot> > >::type& std::get<1ul, TestBot*, std::default_delete<TestBot> >(std::tuple<TestBot*, std::default_delete<TestBot> >&) [183]
+[177]    0.0    0.00    0.00       1         std::default_delete<TestBot>& std::__get_helper<1ul, std::default_delete<TestBot>>(std::_Tuple_impl<1ul, std::default_delete<TestBot>>&) [177]
+                0.00    0.00       1/1           std::_Tuple_impl<1ul, std::default_delete<TestBot> >::_M_head(std::_Tuple_impl<1ul, std::default_delete<TestBot> >&) [152]
+-----------------------------------------------
+                0.00    0.00       1/1           std::tuple_element<1ul, std::tuple<Trainee*, std::default_delete<Trainee> > >::type& std::get<1ul, Trainee*, std::default_delete<Trainee> >(std::tuple<Trainee*, std::default_delete<Trainee> >&) [184]
+[178]    0.0    0.00    0.00       1         std::default_delete<Trainee>& std::__get_helper<1ul, std::default_delete<Trainee>>(std::_Tuple_impl<1ul, std::default_delete<Trainee>>&) [178]
+                0.00    0.00       1/1           std::_Tuple_impl<1ul, std::default_delete<Trainee> >::_M_head(std::_Tuple_impl<1ul, std::default_delete<Trainee> >&) [154]
+-----------------------------------------------
+                0.00    0.00       1/1           std::__uniq_ptr_impl<Player, std::default_delete<Player> >::_M_ptr() [160]
+[179]    0.0    0.00    0.00       1         std::tuple_element<0ul, std::tuple<Player*, std::default_delete<Player> > >::type& std::get<0ul, Player*, std::default_delete<Player> >(std::tuple<Player*, std::default_delete<Player> >&) [179]
+                0.00    0.00       1/1           Player*& std::__get_helper<0ul, Player*, std::default_delete<Player> >(std::_Tuple_impl<0ul, Player*, std::default_delete<Player> >&) [173]
+-----------------------------------------------
+                0.00    0.00       1/1           std::__uniq_ptr_impl<Trainee, std::default_delete<Trainee> >::_M_ptr() const [114]
+[180]    0.0    0.00    0.00       1         std::tuple_element<0ul, std::tuple<Trainee*, std::default_delete<Trainee> > >::type const& std::get<0ul, Trainee*, std::default_delete<Trainee> >(std::tuple<Trainee*, std::default_delete<Trainee> > const&) [180]
+                0.00    0.00       1/1           Trainee* const& std::__get_helper<0ul, Trainee*, std::default_delete<Trainee> >(std::_Tuple_impl<0ul, Trainee*, std::default_delete<Trainee> > const&) [174]
+-----------------------------------------------
+                0.00    0.00       1/1           std::__uniq_ptr_impl<Enemy, std::default_delete<Enemy> >::_M_deleter() [157]
+[181]    0.0    0.00    0.00       1         std::tuple_element<1ul, std::tuple<Enemy*, std::default_delete<Enemy> > >::type& std::get<1ul, Enemy*, std::default_delete<Enemy> >(std::tuple<Enemy*, std::default_delete<Enemy> >&) [181]
+                0.00    0.00       1/1           std::default_delete<Enemy>& std::__get_helper<1ul, std::default_delete<Enemy>>(std::_Tuple_impl<1ul, std::default_delete<Enemy>>&) [175]
+-----------------------------------------------
+                0.00    0.00       1/1           std::__uniq_ptr_impl<Player, std::default_delete<Player> >::_M_deleter() [159]
+[182]    0.0    0.00    0.00       1         std::tuple_element<1ul, std::tuple<Player*, std::default_delete<Player> > >::type& std::get<1ul, Player*, std::default_delete<Player> >(std::tuple<Player*, std::default_delete<Player> >&) [182]
+                0.00    0.00       1/1           std::default_delete<Player>& std::__get_helper<1ul, std::default_delete<Player>>(std::_Tuple_impl<1ul, std::default_delete<Player>>&) [176]
+-----------------------------------------------
+                0.00    0.00       1/1           std::__uniq_ptr_impl<TestBot, std::default_delete<TestBot> >::_M_deleter() [162]
+[183]    0.0    0.00    0.00       1         std::tuple_element<1ul, std::tuple<TestBot*, std::default_delete<TestBot> > >::type& std::get<1ul, TestBot*, std::default_delete<TestBot> >(std::tuple<TestBot*, std::default_delete<TestBot> >&) [183]
+                0.00    0.00       1/1           std::default_delete<TestBot>& std::__get_helper<1ul, std::default_delete<TestBot>>(std::_Tuple_impl<1ul, std::default_delete<TestBot>>&) [177]
+-----------------------------------------------
+                0.00    0.00       1/1           std::__uniq_ptr_impl<Trainee, std::default_delete<Trainee> >::_M_deleter() [164]
+[184]    0.0    0.00    0.00       1         std::tuple_element<1ul, std::tuple<Trainee*, std::default_delete<Trainee> > >::type& std::get<1ul, Trainee*, std::default_delete<Trainee> >(std::tuple<Trainee*, std::default_delete<Trainee> >&) [184]
+                0.00    0.00       1/1           std::default_delete<Trainee>& std::__get_helper<1ul, std::default_delete<Trainee>>(std::_Tuple_impl<1ul, std::default_delete<Trainee>>&) [178]
+-----------------------------------------------
+                0.00    0.00       1/1           std::unique_ptr<Enemy, std::default_delete<Enemy> >::~unique_ptr() [131]
+[185]    0.0    0.00    0.00       1         std::remove_reference<Enemy*&>::type&& std::move<Enemy*&>(Enemy*&) [185]
+-----------------------------------------------
+                0.00    0.00       1/1           std::unique_ptr<Player, std::default_delete<Player> >::~unique_ptr() [134]
+[186]    0.0    0.00    0.00       1         std::remove_reference<Player*&>::type&& std::move<Player*&>(Player*&) [186]
+-----------------------------------------------
+                0.00    0.00       1/1           std::unique_ptr<TestBot, std::default_delete<TestBot> >::~unique_ptr() [137]
+[187]    0.0    0.00    0.00       1         std::remove_reference<TestBot*&>::type&& std::move<TestBot*&>(TestBot*&) [187]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_MakeUniq<Trainee>::__single_object std::make_unique<Trainee, int, char const (&) [6], int, int, int, int, int>(int&&, char const (&) [6], int&&, int&&, int&&, int&&, int&&) [172]
+[188]    0.0    0.00    0.00       1         char const (&std::forward<char const (&) [6]>(std::remove_reference<char const (&) [6]>::type&)) [6] [188]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_MakeUniq<Enemy>::__single_object std::make_unique<Enemy, int, char const (&) [8], int, int, int, int>(int&&, char const (&) [8], int&&, int&&, int&&, int&&) [170]
+[189]    0.0    0.00    0.00       1         char const (&std::forward<char const (&) [8]>(std::remove_reference<char const (&) [8]>::type&)) [8] [189]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_MakeUniq<TestBot>::__single_object std::make_unique<TestBot, bool>(bool&&) [171]
+[190]    0.0    0.00    0.00       1         bool&& std::forward<bool>(std::remove_reference<bool>::type&) [190]
+-----------------------------------------------
+                0.00    0.00       1/1           bool std::operator!=<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*) [192]
+[191]    0.0    0.00    0.00       1         bool std::operator==<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*) [191]
+-----------------------------------------------
+                0.00    0.00       1/1           getUserInput(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::unique_ptr<TestBot, std::default_delete<TestBot> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, int, bool) [54]
+[192]    0.0    0.00    0.00       1         bool std::operator!=<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*) [192]
+                0.00    0.00       1/1           bool std::operator==<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*) [191]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function is in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
